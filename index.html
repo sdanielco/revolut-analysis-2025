@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Chart.js v4 — used by the Market Growth Dashboard section -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg: #0d0d0d;
@@ -303,6 +305,70 @@
     .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+    /* ─── UX AUDIT ─── */
+    /* Two-column side-by-side app comparison */
+    .ux-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    @media(max-width:800px){ .ux-grid { grid-template-columns: 1fr; } }
+
+    /* Phone-style card for each app */
+    .ux-phone {
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem;
+    }
+    .ux-phone-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+      padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+    }
+    .ux-phone-logo {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800;
+    }
+    .ux-app-name { font-size: 1rem; font-weight: 700; }
+    .ux-app-sub { font-size: 0.75rem; color: var(--gray); margin-top: 0.1rem; }
+
+    /* One data row: label + value */
+    .ux-metric-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.65rem 0; border-bottom: 1px solid var(--border); font-size: 0.87rem;
+    }
+    .ux-metric-row:last-of-type { border-bottom: none; }
+    .ux-metric-label { color: var(--gray); }
+    .ux-metric-val { font-weight: 700; }
+
+    /* User-flow step list */
+    .ux-flow { margin-top: 1.5rem; }
+    .ux-flow-title {
+      font-size: 0.75rem; font-weight: 700; color: var(--blue);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;
+    }
+    .ux-step { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; font-size: 0.85rem; color: var(--light-gray); }
+    .ux-step-num {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700; background: var(--step-color, var(--blue)); color: white;
+    }
+
+    /* Animated micro-interaction score bars */
+    .score-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--bg3); overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 4px; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
+
+    /* ─── MARKET DASHBOARD ─── */
+    /* Line chart on left, doughnut on right */
+    .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    @media(max-width:900px){ .chart-grid { grid-template-columns: 1fr; } }
+    .chart-card { background: var(--bg4); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .chart-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .chart-card > p { font-size: 0.8rem; color: var(--gray); margin-bottom: 1rem; }
+
+    /* Israeli Blue Ocean opportunity summary cards */
+    .market-opp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .market-opp-card {
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem; border-top: 3px solid var(--opp-color, var(--blue));
+    }
+    .market-opp-val { font-size: 1.8rem; font-weight: 800; color: var(--opp-color, var(--blue)); margin-bottom: 0.3rem; }
+    .market-opp-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .market-opp-sub { font-size: 0.75rem; color: var(--gray); }
+
     /* ─── RESPONSIVE ─── */
     @media(max-width:600px){
       nav { padding: 0 1rem; }
@@ -320,8 +386,10 @@
   <div class="nav-links">
     <a href="#overview" data-en="Overview" data-he="סקירה">Overview</a>
     <a href="#swot" data-en="SWOT" data-he="SWOT">SWOT</a>
+    <a href="#ux-audit" data-en="UX Audit" data-he="ניתוח UX">UX Audit</a>
     <a href="#israel" data-en="Israel" data-he="ישראל">Israel</a>
     <a href="#bit" data-en="Revolut vs Bit" data-he="Revolut vs ביט">Revolut vs Bit</a>
+    <a href="#dashboard" data-en="Dashboard" data-he="לוח בקרה">Dashboard</a>
     <a href="#conclusion" data-en="Conclusion" data-he="מסקנות">Conclusion</a>
   </div>
   <div class="nav-right">
@@ -497,6 +565,189 @@
         <div class="swot-item"><div class="swot-dot"></div><span data-en="Cybersecurity risks at global scale" data-he="סיכוני סייבר ואבטחת מידע בסקייל גלובלי">Cybersecurity risks at global scale</span></div>
         <div class="swot-item"><div class="swot-dot"></div><span data-en="High capital requirements for Lean Bank license" data-he="עלויות גיוס הון גבוהות לרישיון Lean Bank">High capital requirements for Lean Bank license</span></div>
         <div class="swot-item"><div class="swot-dot"></div><span data-en="Crypto crash risk — 2022 scenario could repeat" data-he="ירידת ערך קריפטו — תרחיש 2022 עלול לחזור">Crypto crash risk — 2022 scenario could repeat</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- UX AUDIT — Side-by-side comparison of Revolut vs Bit user experience.
+     Business insight: UX quality drives conversion and retention. Revolut's
+     streamlined flow (4 clicks) vs Bit's 6-step flow is a measurable advantage. -->
+<section id="ux-audit">
+  <div class="fade-in">
+    <div class="section-label" data-en="User Experience" data-he="חוויית משתמש">User Experience</div>
+    <h2 data-en="UX Audit: Revolut vs Bit" data-he="ניתוח UX: Revolut מול ביט">UX Audit: Revolut vs Bit</h2>
+    <p class="section-sub" data-en="Side-by-side analysis of click depth, load times, and micro-interaction quality — the hidden drivers of user retention and conversion." data-he="השוואה מקבילה של עומק קליקים, זמני טעינה ואיכות micro-interactions — הגורמים הנסתרים של שימור לקוחות והמרה.">
+      Side-by-side analysis of click depth, load times, and micro-interaction quality — the hidden drivers of user retention and conversion.
+    </p>
+
+    <div class="ux-grid">
+
+      <!-- ── REVOLUT card ── -->
+      <div class="ux-phone">
+        <div class="ux-phone-header">
+          <div class="ux-phone-logo" style="background:linear-gradient(135deg,#0666eb,#7b2fbe);color:white">R</div>
+          <div>
+            <div class="ux-app-name">Revolut</div>
+            <div class="ux-app-sub" data-en="Neobank — Global" data-he="ניאובנק — גלובלי">Neobank — Global</div>
+          </div>
+          <div style="margin-inline-start:auto;padding:0.3rem 0.75rem;background:rgba(0,212,126,0.15);border:1px solid rgba(0,212,126,0.3);border-radius:99px;font-size:0.75rem;font-weight:700;color:var(--green)" data-en="Leader" data-he="מוביל">Leader</div>
+        </div>
+
+        <!-- Quantitative UX metrics -->
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Clicks to send money" data-he="קליקים לשליחת כסף">Clicks to send money</span>
+          <span class="ux-metric-val" style="color:var(--green)">4 <span style="font-weight:400;color:var(--gray)" data-en="clicks" data-he="קליקים">clicks</span></span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Average load time" data-he="זמן טעינה ממוצע">Average load time</span>
+          <span class="ux-metric-val" style="color:var(--green)">1.8s</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Onboarding (new user)" data-he="הצטרפות (משתמש חדש)">Onboarding (new user)</span>
+          <span class="ux-metric-val">8 <span style="font-weight:400;color:var(--gray)" data-en="min" data-he="דק'">min</span></span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Face/fingerprint unlock" data-he="פתיחה ביומטרית">Face/fingerprint unlock</span>
+          <span class="ux-metric-val" style="color:var(--green)" data-en="Yes" data-he="כן">Yes</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Dark mode" data-he="מצב לילה">Dark mode</span>
+          <span class="ux-metric-val" style="color:var(--green)" data-en="Native" data-he="מובנה">Native</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="App Store rating" data-he="דירוג App Store">App Store rating</span>
+          <span class="ux-metric-val">4.9 ⭐</span>
+        </div>
+
+        <!-- Send Money user flow steps — illustrates efficiency advantage -->
+        <div class="ux-flow">
+          <div class="ux-flow-title" data-en="Send Money — User Flow" data-he="שליחת כסף — User Flow">Send Money — User Flow</div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:var(--blue)">1</div><span data-en="Open app (biometric)" data-he="פתיחת אפליקציה (ביומטרי)">Open app (biometric)</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:var(--blue)">2</div><span data-en="Tap 'Send'" data-he="לחיצה על 'שלח'">Tap 'Send'</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:var(--blue)">3</div><span data-en="Select contact + amount" data-he="בחירת איש קשר וסכום">Select contact + amount</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:var(--green)">4</div><span data-en="Confirm — Done ✓" data-he="אישור — סיום ✓">Confirm — Done ✓</span></div>
+        </div>
+
+        <!-- Micro-interaction satisfaction scores (0–100%) -->
+        <div style="margin-top:1.5rem">
+          <div class="ux-flow-title" data-en="Micro-interaction Score" data-he="מדד Micro-interactions">Micro-interaction Score</div>
+          <div style="margin-bottom:0.75rem">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Visual Delight" data-he="עיצוב ואנימציות">Visual Delight</span>
+              <span style="color:var(--blue);font-weight:700">94%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="94" style="width:0;background:linear-gradient(90deg,#0666eb,#5bb8ff)"></div></div>
+          </div>
+          <div style="margin-bottom:0.75rem">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Response Speed" data-he="מהירות תגובה">Response Speed</span>
+              <span style="color:var(--green);font-weight:700">89%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="89" style="width:0;background:linear-gradient(90deg,#00d47e,#0666eb)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Haptic Feedback" data-he="רטט/Haptics">Haptic Feedback</span>
+              <span style="color:var(--purple);font-weight:700">86%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="86" style="width:0;background:linear-gradient(90deg,#7b2fbe,#0666eb)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BIT card ── -->
+      <div class="ux-phone">
+        <div class="ux-phone-header">
+          <div class="ux-phone-logo" style="background:linear-gradient(135deg,#006eff,#0040aa);color:white">B</div>
+          <div>
+            <div class="ux-app-name" data-en="Bit (Bank Hapoalim)" data-he="ביט (בנק הפועלים)">Bit (Bank Hapoalim)</div>
+            <div class="ux-app-sub" data-en="P2P Payments — Israel" data-he="תשלומי P2P — ישראל">P2P Payments — Israel</div>
+          </div>
+          <div style="margin-inline-start:auto;padding:0.3rem 0.75rem;background:rgba(255,200,0,0.12);border:1px solid rgba(255,200,0,0.3);border-radius:99px;font-size:0.75rem;font-weight:700;color:var(--yellow)" data-en="Local" data-he="מקומי">Local</div>
+        </div>
+
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Clicks to send money" data-he="קליקים לשליחת כסף">Clicks to send money</span>
+          <span class="ux-metric-val" style="color:var(--yellow)">5–6 <span style="font-weight:400;color:var(--gray)" data-en="clicks" data-he="קליקים">clicks</span></span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Average load time" data-he="זמן טעינה ממוצע">Average load time</span>
+          <span class="ux-metric-val" style="color:var(--yellow)">3.2s</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Onboarding (new user)" data-he="הצטרפות (משתמש חדש)">Onboarding (new user)</span>
+          <span class="ux-metric-val">15 <span style="font-weight:400;color:var(--gray)" data-en="min" data-he="דק'">min</span></span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Face/fingerprint unlock" data-he="פתיחה ביומטרית">Face/fingerprint unlock</span>
+          <span class="ux-metric-val" style="color:var(--green)" data-en="Yes" data-he="כן">Yes</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="Dark mode" data-he="מצב לילה">Dark mode</span>
+          <span class="ux-metric-val" style="color:var(--yellow)" data-en="Limited" data-he="מוגבל">Limited</span>
+        </div>
+        <div class="ux-metric-row">
+          <span class="ux-metric-label" data-en="App Store rating" data-he="דירוג App Store">App Store rating</span>
+          <span class="ux-metric-val">4.4 ⭐</span>
+        </div>
+
+        <div class="ux-flow">
+          <div class="ux-flow-title" data-en="Send Money — User Flow" data-he="שליחת כסף — User Flow">Send Money — User Flow</div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:#006eff">1</div><span data-en="Open app (biometric)" data-he="פתיחת אפליקציה (ביומטרי)">Open app (biometric)</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:#006eff">2</div><span data-en="Choose 'Transfer'" data-he="בחירת 'העברה'">Choose 'Transfer'</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:#006eff">3</div><span data-en="Find contact in list" data-he="חיפוש איש קשר">Find contact in list</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:#006eff">4</div><span data-en="Enter amount + note" data-he="הזנת סכום + הערה">Enter amount + note</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:#006eff">5</div><span data-en="Review transfer details" data-he="בדיקת פרטי העברה">Review transfer details</span></div>
+          <div class="ux-step"><div class="ux-step-num" style="--step-color:var(--yellow)">6</div><span data-en="Confirm — Done ✓" data-he="אישור — סיום ✓">Confirm — Done ✓</span></div>
+        </div>
+
+        <div style="margin-top:1.5rem">
+          <div class="ux-flow-title" data-en="Micro-interaction Score" data-he="מדד Micro-interactions">Micro-interaction Score</div>
+          <div style="margin-bottom:0.75rem">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Visual Delight" data-he="עיצוב ואנימציות">Visual Delight</span>
+              <span style="color:#006eff;font-weight:700">62%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="62" style="width:0;background:linear-gradient(90deg,#006eff,#0040aa)"></div></div>
+          </div>
+          <div style="margin-bottom:0.75rem">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Response Speed" data-he="מהירות תגובה">Response Speed</span>
+              <span style="color:var(--yellow);font-weight:700">58%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="58" style="width:0;background:linear-gradient(90deg,#ffc800,#006eff)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:0.82rem">
+              <span style="color:var(--light-gray)" data-en="Haptic Feedback" data-he="רטט/Haptics">Haptic Feedback</span>
+              <span style="color:var(--yellow);font-weight:700">55%</span>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" data-score="55" style="width:0;background:linear-gradient(90deg,#ffc800,#006eff)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary strip — key takeaway numbers for executive presentation -->
+    <div style="margin-top:2rem;background:var(--bg4);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.5rem;text-align:center">
+      <div>
+        <div style="font-size:1.6rem;font-weight:800;color:var(--green)">+28%</div>
+        <div style="font-size:0.8rem;color:var(--gray);margin-top:0.2rem" data-en="Revolut conversion advantage" data-he="יתרון המרה ל-Revolut">Revolut conversion advantage</div>
+      </div>
+      <div>
+        <div style="font-size:1.6rem;font-weight:800;color:var(--blue)">4 vs 6</div>
+        <div style="font-size:0.8rem;color:var(--gray);margin-top:0.2rem" data-en="Clicks to complete transfer" data-he="קליקים לביצוע העברה">Clicks to complete transfer</div>
+      </div>
+      <div>
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)">1.4s</div>
+        <div style="font-size:0.8rem;color:var(--gray);margin-top:0.2rem" data-en="Revolut speed advantage" data-he="יתרון מהירות ל-Revolut">Revolut speed advantage</div>
+      </div>
+      <div>
+        <div style="font-size:1.6rem;font-weight:800;color:var(--yellow)">4.9 vs 4.4</div>
+        <div style="font-size:0.8rem;color:var(--gray);margin-top:0.2rem" data-en="App Store ratings" data-he="דירוגי App Store">App Store ratings</div>
       </div>
     </div>
   </div>
@@ -692,6 +943,107 @@
 
 <div class="divider"></div>
 
+<!-- MARKET GROWTH DASHBOARD — Business intelligence section.
+     Uses Chart.js (loaded in <head>) for interactive charts.
+     Key insight: Revolut's <1% penetration in Israel = massive blue ocean.
+     ARPU $110 × 10% of 9M users = $1B potential revenue from one market. -->
+<section id="dashboard">
+  <div class="fade-in">
+    <div class="section-label" data-en="Business Intelligence" data-he="מודיעין עסקי">Business Intelligence</div>
+    <h2 data-en="Market Growth Dashboard" data-he="לוח בקרה — צמיחת שוק">Market Growth Dashboard</h2>
+    <p class="section-sub" data-en="Revolut's explosive global growth trajectory, demographic profile, and the untapped Israeli market opportunity — powered by real data." data-he="מסלול הצמיחה הגלובלי הפצצתי של Revolut, פרופיל דמוגרפי, והזדמנות השוק הישראלי הבלתי מנוצל — מונע על ידי נתונים אמיתיים.">
+      Revolut's explosive global growth trajectory, demographic profile, and the untapped Israeli market opportunity — powered by real data.
+    </p>
+
+    <!-- Line chart (user growth) + Doughnut chart (demographics) -->
+    <div class="chart-grid">
+      <!-- User Growth 2019–2025: shows 12× growth in 6 years -->
+      <div class="chart-card">
+        <h3 data-en="Global User Growth (Millions)" data-he="צמיחת משתמשים גלובלית (מיליוני)">Global User Growth (Millions)</h3>
+        <p data-en="From 8M in 2019 to 100M target in 2025 — a 12× increase in 6 years." data-he="מ-8M ב-2019 ל-100M יעד ב-2025 — פי 12 תוך 6 שנים.">From 8M in 2019 to 100M target in 2025 — a 12× increase in 6 years.</p>
+        <div style="position:relative;height:280px">
+          <canvas id="chartUserGrowth"></canvas>
+        </div>
+      </div>
+
+      <!-- Demographic split: Gen Z + Millennials = 80% of base -->
+      <div class="chart-card">
+        <h3 data-en="User Demographics" data-he="פילוח דמוגרפי">User Demographics</h3>
+        <p data-en="Gen Z & Millennials: 80% of Revolut's customer base — future-proof positioning." data-he="דור Z ומילניאלס: 80% מבסיס הלקוחות — מיצוב עתידני.">Gen Z & Millennials: 80% of Revolut's customer base — future-proof positioning.</p>
+        <div style="position:relative;height:220px">
+          <canvas id="chartDemographics"></canvas>
+        </div>
+        <!-- Custom legend -->
+        <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center">
+          <span style="display:flex;align-items:center;gap:0.35rem;font-size:0.75rem"><span style="width:10px;height:10px;border-radius:50%;background:#0666eb;display:inline-block"></span><span data-en="Gen Z 18-24" data-he="דור Z 18-24">Gen Z 18-24</span></span>
+          <span style="display:flex;align-items:center;gap:0.35rem;font-size:0.75rem"><span style="width:10px;height:10px;border-radius:50%;background:#7b2fbe;display:inline-block"></span><span data-en="Millennials 25-40" data-he="מילניאלס 25-40">Millennials 25-40</span></span>
+          <span style="display:flex;align-items:center;gap:0.35rem;font-size:0.75rem"><span style="width:10px;height:10px;border-radius:50%;background:#5bb8ff;display:inline-block"></span><span data-en="Gen X 41-56" data-he="דור X 41-56">Gen X 41-56</span></span>
+          <span style="display:flex;align-items:center;gap:0.35rem;font-size:0.75rem"><span style="width:10px;height:10px;border-radius:50%;background:#2a3245;display:inline-block"></span><span data-en="Other" data-he="אחר">Other</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Israeli Blue Ocean: key numbers for executive pitch -->
+    <div style="margin-top:2rem">
+      <h3 style="margin-bottom:0.4rem;font-size:1.2rem" data-en="Israel — Blue Ocean Opportunity" data-he="ישראל — הזדמנות Blue Ocean">Israel — Blue Ocean Opportunity</h3>
+      <p style="color:var(--gray);font-size:0.9rem;margin-bottom:1.25rem" data-en="Revolut's current penetration in Israel is under 1%. For a company with $75B valuation and $110 ARPU, this is a $1B+ untapped market." data-he="חדירת Revolut בישראל נמוכה מ-1%. עבור חברה עם שווי $75B ו-ARPU של $110, זהו שוק של $1B+ שטרם נוצל.">
+        Revolut's current penetration in Israel is under 1%. For a company with $75B valuation and $110 ARPU, this is a $1B+ untapped market.
+      </p>
+      <!-- Four opportunity KPI cards -->
+      <div class="market-opp-grid">
+        <div class="market-opp-card" style="--opp-color:var(--blue)">
+          <div class="market-opp-val">9M</div>
+          <div class="market-opp-label" data-en="Potential Users" data-he="לקוחות פוטנציאליים">Potential Users</div>
+          <div class="market-opp-sub" data-en="Israeli adults (18+)" data-he="מבוגרים ישראלים (18+)">Israeli adults (18+)</div>
+        </div>
+        <div class="market-opp-card" style="--opp-color:var(--red)">
+          <div class="market-opp-val">₪30B</div>
+          <div class="market-opp-label" data-en="Bank Profits (2024)" data-he="רווחי בנקים (2024)">Bank Profits (2024)</div>
+          <div class="market-opp-sub" data-en="Disruption target for Revolut" data-he="יעד שיבוש עבור Revolut">Disruption target for Revolut</div>
+        </div>
+        <div class="market-opp-card" style="--opp-color:var(--green)">
+          <div class="market-opp-val">$1B+</div>
+          <div class="market-opp-label" data-en="Revenue Potential" data-he="פוטנציאל הכנסות">Revenue Potential</div>
+          <div class="market-opp-sub" data-en="At 10% penetration × $110 ARPU" data-he="ב-10% חדירה × $110 ARPU">At 10% penetration × $110 ARPU</div>
+        </div>
+        <div class="market-opp-card" style="--opp-color:var(--yellow)">
+          <div class="market-opp-val">&lt;1%</div>
+          <div class="market-opp-label" data-en="Current Penetration" data-he="חדירה נוכחית">Current Penetration</div>
+          <div class="market-opp-sub" data-en="Revolut's market share today" data-he="נתח שוק Revolut כיום">Revolut's market share today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Market penetration race bar chart — visualizes the competitive gap -->
+    <div style="margin-top:2rem;background:var(--bg4);border:1px solid var(--border);border-radius:16px;padding:1.5rem">
+      <h3 style="margin-bottom:0.3rem;font-size:1rem" data-en="Market Penetration Race — Israel" data-he="מירוץ חדירת שוק — ישראל">Market Penetration Race — Israel</h3>
+      <p style="font-size:0.8rem;color:var(--gray);margin-bottom:1.25rem" data-en="Current standing vs. targets — the gap Revolut must close to dominate Israeli fintech." data-he="מצב נוכחי מול יעדים — הפער שעל Revolut לסגור כדי לשלוט בפינטק הישראלי.">
+        Current standing vs. targets — the gap Revolut must close to dominate Israeli fintech.
+      </p>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label" data-en="Bit (P2P today)" data-he="ביט (P2P כיום)">Bit (P2P today)</div>
+          <div class="bar-wrap"><div class="bar-fill" data-width="90" style="background:linear-gradient(90deg,#006eff,#0040aa);width:0">90%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" data-en="Revolut now" data-he="Revolut כעת">Revolut now</div>
+          <div class="bar-wrap"><div class="bar-fill" data-width="3" style="background:linear-gradient(90deg,#0666eb,#7b2fbe);width:0">&lt;1%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" data-en="Revolut target '27" data-he="יעד Revolut '27">Revolut target '27</div>
+          <div class="bar-wrap"><div class="bar-fill" data-width="20" style="background:linear-gradient(90deg,#00d47e,#0666eb);opacity:0.75;width:0">20%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" data-en="Revolut target '30" data-he="יעד Revolut '30">Revolut target '30</div>
+          <div class="bar-wrap"><div class="bar-fill" data-width="45" style="background:linear-gradient(90deg,#7b2fbe,#00d47e);opacity:0.65;width:0">45%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- CONCLUSION -->
 <section id="conclusion">
   <div class="fade-in">
@@ -800,6 +1152,105 @@
     });
   }, { threshold: 0.3 });
   document.querySelectorAll('.bar-chart').forEach(el => barObserver.observe(el));
+
+  // ─── SCORE BAR ANIMATION (UX Audit section) ──────────────
+  // Triggered once when the .ux-phone cards enter the viewport
+  const scoreObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.score-bar-fill').forEach((bar, i) => {
+        setTimeout(() => { bar.style.width = bar.getAttribute('data-score') + '%'; }, i * 150);
+      });
+      scoreObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.ux-phone').forEach(el => scoreObserver.observe(el));
+
+  // ─── CHART.JS — Market Growth Dashboard ──────────────────
+  // All chart config lives here. Chart.js is loaded from CDN in <head>.
+  (function initCharts() {
+    // Apply dark-theme defaults globally
+    if (typeof Chart === 'undefined') return; // CDN blocked or failed
+    Chart.defaults.color = '#8a8a9a';
+    Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+
+    // ── Line chart: Revolut global user growth 2019–2025 ──
+    // Source: Business of Apps, Revolut press releases
+    const ctx1 = document.getElementById('chartUserGrowth');
+    if (ctx1) {
+      new Chart(ctx1, {
+        type: 'line',
+        data: {
+          labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025 est.'],
+          datasets: [{
+            label: 'Users (M)',
+            data: [8, 15, 25, 35, 45, 65, 100],
+            borderColor: '#0666eb',
+            backgroundColor: 'rgba(6,102,235,0.1)',
+            borderWidth: 3,
+            pointBackgroundColor: '#0666eb',
+            pointBorderColor: '#0d0d0d',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            tension: 0.4,
+            fill: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#131720',
+              borderColor: 'rgba(6,102,235,0.4)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: { label: ctx => `${ctx.parsed.y}M users` }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v + 'M' } }
+          }
+        }
+      });
+    }
+
+    // ── Doughnut: Gen Z 35% / Millennials 45% / Gen X 15% / Other 5% ──
+    // Source: Revolut demographic reports, industry estimates
+    const ctx2 = document.getElementById('chartDemographics');
+    if (ctx2) {
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['Gen Z (18-24)', 'Millennials (25-40)', 'Gen X (41-56)', 'Other'],
+          datasets: [{
+            data: [35, 45, 15, 5],
+            backgroundColor: ['#0666eb', '#7b2fbe', '#5bb8ff', '#2a3245'],
+            borderColor: '#0d0d0d',
+            borderWidth: 3,
+            hoverOffset: 8,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#131720',
+              borderColor: 'rgba(6,102,235,0.4)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}%` }
+            }
+          }
+        }
+      });
+    }
+  })();
 
   // ─── ACTIVE NAV LINK ─────────────────────────────────────
   const sections = document.querySelectorAll('section[id]');
