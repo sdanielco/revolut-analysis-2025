@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Revolut — ניתוח מעמיק 2025</title>
+  <title>Revolut — In-Depth Analysis 2025</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0d0d0d;
@@ -23,18 +23,34 @@
       --gray: #8a8a9a;
       --light-gray: #ccccd4;
       --border: rgba(255,255,255,0.08);
+      --font: 'Inter', sans-serif;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    [dir="rtl"] { --font: 'Heebo', sans-serif; }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font);
       background: var(--bg);
       color: var(--white);
       overflow-x: hidden;
+      transition: font-family 0.2s;
     }
+
+    /* ─── LANGUAGE TOGGLE ─── */
+    .lang-toggle {
+      display: flex; align-items: center; gap: 0; border-radius: 20px;
+      overflow: hidden; border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .lang-btn {
+      padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; border: none; background: transparent;
+      color: var(--gray); transition: all 0.2s; font-family: var(--font);
+    }
+    .lang-btn.active { background: var(--blue); color: var(--white); }
+    .lang-btn:hover:not(.active) { color: var(--white); }
 
     /* ─── NAV ─── */
     nav {
@@ -44,36 +60,37 @@
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
+      height: 64px; gap: 1rem;
     }
     .nav-logo {
       font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--blue), var(--purple));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      flex-shrink: 0;
     }
-    .nav-links { display: flex; gap: 0.5rem; }
+    .nav-links { display: flex; gap: 0.3rem; flex-wrap: wrap; }
     .nav-links a {
-      color: var(--gray); text-decoration: none; font-size: 0.85rem; font-weight: 500;
-      padding: 0.4rem 0.9rem; border-radius: 20px;
-      transition: all 0.2s;
+      color: var(--gray); text-decoration: none; font-size: 0.82rem; font-weight: 500;
+      padding: 0.4rem 0.8rem; border-radius: 20px; transition: all 0.2s; white-space: nowrap;
     }
-    .nav-links a:hover { color: var(--white); background: var(--bg4); }
+    .nav-links a:hover, .nav-links a.active-link {
+      color: var(--white); background: var(--bg4);
+    }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
 
     /* ─── HERO ─── */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 6rem 2rem 4rem;
-      position: relative;
-      overflow: hidden;
+      text-align: center; padding: 6rem 2rem 4rem;
+      position: relative; overflow: hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
         radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,102,235,0.18) 0%, transparent 70%),
         radial-gradient(ellipse 40% 40% at 80% 80%, rgba(123,47,190,0.12) 0%, transparent 60%);
+      pointer-events: none;
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -83,45 +100,38 @@
       text-transform: uppercase; letter-spacing: 0.05em;
     }
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 900; line-height: 1.0;
-      letter-spacing: -2px;
-      margin-bottom: 1.5rem;
+      font-size: clamp(3rem, 8vw, 7rem); font-weight: 900;
+      line-height: 1.0; letter-spacing: -2px; margin-bottom: 1.5rem;
     }
     .hero h1 span {
       background: linear-gradient(135deg, var(--blue), var(--blue-light));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .hero-sub {
-      font-size: 1.2rem; color: var(--light-gray); max-width: 600px;
+      font-size: 1.15rem; color: var(--light-gray); max-width: 620px;
       line-height: 1.7; margin-bottom: 3rem;
     }
-    .hero-stats {
-      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
-      margin-bottom: 3rem;
-    }
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
     .hero-stat { text-align: center; }
     .hero-stat .val {
       font-size: 2.5rem; font-weight: 800;
       background: linear-gradient(135deg, var(--white), var(--blue-light));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .hero-stat .lbl { font-size: 0.8rem; color: var(--gray); margin-top: 0.2rem; }
-    .hero-cta {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    }
+    .hero-stat .lbl { font-size: 0.8rem; color: var(--gray); margin-top: 0.25rem; }
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       background: var(--blue); color: var(--white);
       padding: 0.85rem 2rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: all 0.2s;
+      text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+      font-family: var(--font);
     }
     .btn-primary:hover { background: #0556cc; transform: translateY(-2px); }
     .btn-outline {
       background: transparent; color: var(--white);
       padding: 0.85rem 2rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
-      text-decoration: none; border: 1px solid var(--border); cursor: pointer;
-      transition: all 0.2s;
+      text-decoration: none; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+      font-family: var(--font);
     }
     .btn-outline:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
     .scroll-hint {
@@ -129,10 +139,7 @@
       display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
       color: var(--gray); font-size: 0.75rem; animation: bounce 2s infinite;
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
-    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
     /* ─── SECTIONS ─── */
     section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
@@ -140,204 +147,168 @@
       font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.1em; color: var(--blue); margin-bottom: 0.75rem;
     }
-    h2 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem;
-    }
-    .section-sub {
-      color: var(--gray); font-size: 1rem; max-width: 600px; line-height: 1.7;
-      margin-bottom: 3rem;
-    }
-    .divider {
-      height: 1px; background: var(--border);
-      max-width: 1200px; margin: 0 auto;
-    }
+    h2 { font-size: clamp(2rem,5vw,3rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; }
+    .section-sub { color: var(--gray); font-size: 1rem; max-width: 620px; line-height: 1.7; margin-bottom: 3rem; }
+    .divider { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
 
-    /* ─── METRICS GRID ─── */
-    .metrics-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem; margin-top: 2rem;
-    }
+    /* ─── METRIC CARDS ─── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.5rem; margin-top: 2rem; }
     .metric-card {
-      background: var(--bg4); border: 1px solid var(--border);
-      border-radius: 16px; padding: 1.75rem;
-      position: relative; overflow: hidden;
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.75rem; position: relative; overflow: hidden;
       transition: transform 0.2s, border-color 0.2s;
     }
     .metric-card:hover { transform: translateY(-4px); border-color: rgba(6,102,235,0.3); }
     .metric-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      content: ''; position: absolute; top: 0; inset-inline-start: 0; inset-inline-end: 0; height: 3px;
       background: var(--accent, var(--blue));
     }
-    .metric-val {
-      font-size: 2.5rem; font-weight: 800; margin-bottom: 0.4rem;
-      color: var(--white);
-    }
+    .metric-val { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.4rem; }
     .metric-label { font-size: 0.9rem; font-weight: 600; color: var(--accent, var(--blue)); }
     .metric-sub { font-size: 0.8rem; color: var(--gray); margin-top: 0.2rem; }
 
     /* ─── SWOT ─── */
-    .swot-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1.5rem; margin-top: 2rem;
-    }
-    @media (max-width: 700px) { .swot-grid { grid-template-columns: 1fr; } }
+    .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    @media(max-width:700px){.swot-grid{grid-template-columns:1fr}}
     .swot-card {
-      background: var(--bg4); border: 1px solid var(--border);
-      border-radius: 16px; padding: 1.75rem;
-      position: relative; overflow: hidden;
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.75rem; position: relative; overflow: hidden;
     }
     .swot-card::before {
-      content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+      content: ''; position: absolute; top: 0; bottom: 0; inset-inline-start: 0; width: 4px;
       background: var(--swot-color);
     }
-    .swot-title {
-      font-size: 1.1rem; font-weight: 700; color: var(--swot-color);
-      margin-bottom: 1rem; padding-right: 0.5rem;
-    }
+    .swot-title { font-size: 1.1rem; font-weight: 700; color: var(--swot-color); margin-bottom: 1rem; padding-inline-start: 0.5rem; }
     .swot-item {
       display: flex; gap: 0.75rem; padding: 0.5rem 0;
       border-bottom: 1px solid var(--border); color: var(--light-gray);
-      font-size: 0.9rem; line-height: 1.5;
+      font-size: 0.9rem; line-height: 1.5; align-items: flex-start;
     }
     .swot-item:last-child { border-bottom: none; }
-    .swot-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--swot-color); flex-shrink: 0; margin-top: 0.55rem;
-    }
+    .swot-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--swot-color); flex-shrink: 0; margin-top: 0.6rem; }
 
     /* ─── TIMELINE ─── */
-    .timeline { position: relative; margin-top: 3rem; }
+    .timeline { position: relative; margin-top: 3rem; padding-bottom: 1rem; }
     .timeline::before {
-      content: ''; position: absolute;
-      top: 0; bottom: 0; right: 50%;
+      content: ''; position: absolute; top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
       width: 2px; background: linear-gradient(to bottom, var(--blue), var(--purple));
     }
-    @media (max-width: 700px) {
-      .timeline::before { right: auto; left: 1.5rem; }
+    [dir="rtl"] .timeline::before { left: auto; right: 50%; transform: translateX(50%); }
+    @media(max-width:700px){
+      .timeline::before { left: 1.5rem; right: auto; transform: none; }
+      [dir="rtl"] .timeline::before { right: 1.5rem; left: auto; transform: none; }
     }
     .tl-item {
       display: flex; justify-content: flex-end;
-      padding-left: 55%; padding-bottom: 2.5rem;
-      position: relative;
+      padding-left: 53%; padding-bottom: 2.5rem; position: relative;
     }
-    .tl-item:nth-child(even) { justify-content: flex-start; padding-left: 0; padding-right: 55%; }
-    @media (max-width: 700px) {
-      .tl-item, .tl-item:nth-child(even) {
+    .tl-item:nth-child(even) { justify-content: flex-start; padding-left: 0; padding-right: 53%; }
+    [dir="rtl"] .tl-item { justify-content: flex-start; padding-left: 0; padding-right: 53%; }
+    [dir="rtl"] .tl-item:nth-child(even) { justify-content: flex-end; padding-right: 0; padding-left: 53%; }
+    @media(max-width:700px){
+      .tl-item, .tl-item:nth-child(even),
+      [dir="rtl"] .tl-item, [dir="rtl"] .tl-item:nth-child(even) {
         justify-content: flex-start; padding-left: 4rem; padding-right: 0;
+      }
+      [dir="rtl"] .tl-item, [dir="rtl"] .tl-item:nth-child(even) {
+        padding-right: 4rem; padding-left: 0;
       }
     }
     .tl-dot {
-      position: absolute; right: 50%; transform: translateX(50%);
+      position: absolute; left: 50%; transform: translateX(-50%);
       top: 1rem; width: 14px; height: 14px; border-radius: 50%;
-      background: var(--blue); border: 3px solid var(--bg);
-      z-index: 1;
+      background: var(--blue); border: 3px solid var(--bg); z-index: 1;
     }
-    @media (max-width: 700px) {
-      .tl-dot { right: auto; left: 1.5rem; transform: translateX(-50%); }
+    [dir="rtl"] .tl-dot { left: auto; right: 50%; transform: translateX(50%); }
+    @media(max-width:700px){
+      .tl-dot { left: 1.5rem; transform: translateX(-50%); }
+      [dir="rtl"] .tl-dot { right: 1.5rem; left: auto; transform: translateX(50%); }
     }
     .tl-card {
       background: var(--bg4); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.25rem 1.5rem;
-      max-width: 360px;
+      border-radius: 12px; padding: 1.25rem 1.5rem; max-width: 370px;
     }
     .tl-year { font-size: 0.75rem; font-weight: 700; color: var(--blue); margin-bottom: 0.3rem; }
     .tl-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
     .tl-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.5; }
 
+    /* ─── THREATS ─── */
+    .threats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1.25rem; margin-top: 2rem; }
+    .threat-card {
+      background: var(--bg4); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; border-top: 3px solid var(--red);
+    }
+    .threat-title { font-size: 1rem; font-weight: 700; color: var(--red); margin-bottom: 0.5rem; }
+    .threat-desc { font-size: 0.85rem; color: var(--light-gray); line-height: 1.6; }
+
+    /* ─── BAR CHART ─── */
+    .bar-chart { margin-top: 2rem; }
+    .bar-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .bar-label { width: 140px; font-size: 0.85rem; color: var(--light-gray); text-align: end; flex-shrink: 0; }
+    .bar-wrap { flex: 1; background: var(--bg3); border-radius: 4px; height: 28px; overflow: hidden; }
+    .bar-fill {
+      height: 100%; border-radius: 4px;
+      display: flex; align-items: center; padding-inline-end: 0.75rem;
+      font-size: 0.8rem; font-weight: 700; color: white;
+      justify-content: flex-end;
+      transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    [dir="rtl"] .bar-fill { justify-content: flex-start; padding-inline-start: 0.75rem; padding-inline-end: 0; }
+
     /* ─── COMPARISON TABLE ─── */
-    .comparison-table {
-      width: 100%; border-collapse: collapse; margin-top: 2rem;
-      border-radius: 16px; overflow: hidden;
-    }
-    .comparison-table th {
-      padding: 1rem 1.25rem; text-align: center; font-size: 0.9rem;
-      font-weight: 700;
-    }
-    .comparison-table th:first-child { text-align: right; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin-top: 2rem; border-radius: 16px; overflow: hidden; }
+    .comparison-table th { padding: 1rem 1.25rem; text-align: center; font-size: 0.9rem; font-weight: 700; }
+    .comparison-table th:first-child { text-align: start; }
     .th-revolut { background: var(--blue); }
     .th-bit { background: #006eff; }
     .th-cat { background: var(--bg3); color: var(--gray); }
-    .comparison-table td {
-      padding: 0.85rem 1.25rem; font-size: 0.9rem;
-      border-bottom: 1px solid var(--border); text-align: center;
-    }
-    .comparison-table td:first-child { text-align: right; font-weight: 600; color: var(--light-gray); }
+    .comparison-table td { padding: 0.85rem 1.25rem; font-size: 0.9rem; border-bottom: 1px solid var(--border); text-align: center; }
+    .comparison-table td:first-child { text-align: start; font-weight: 600; color: var(--light-gray); }
     .comparison-table tr:nth-child(odd) td { background: var(--bg4); }
     .comparison-table tr:nth-child(even) td { background: var(--bg3); }
     .comparison-table tr:hover td { background: rgba(6,102,235,0.08); }
     .tag-win { color: var(--green); font-weight: 600; }
     .tag-miss { color: var(--red); }
 
-    /* ─── THREATS ─── */
-    .threats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem; margin-top: 2rem;
-    }
-    .threat-card {
-      background: var(--bg4); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem;
-      border-top: 3px solid var(--red);
-    }
-    .threat-title { font-size: 1rem; font-weight: 700; color: var(--red); margin-bottom: 0.5rem; }
-    .threat-desc { font-size: 0.85rem; color: var(--light-gray); line-height: 1.6; }
-
     /* ─── CONCLUSION ─── */
-    .conclusion-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1.5rem; margin-top: 2rem;
-    }
-    @media (max-width: 700px) { .conclusion-grid { grid-template-columns: 1fr; } }
+    .conclusion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    @media(max-width:700px){.conclusion-grid{grid-template-columns:1fr}}
     .conclusion-card {
       background: var(--bg4); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      position: relative; overflow: hidden;
+      border-radius: 16px; padding: 2rem; position: relative; overflow: hidden;
     }
     .conclusion-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      content: ''; position: absolute; top: 0; inset-inline-start: 0; inset-inline-end: 0; height: 3px;
       background: var(--c-color);
     }
     .conclusion-num {
       font-size: 3rem; font-weight: 900; color: var(--c-color);
-      opacity: 0.3; position: absolute; top: 1rem; left: 1.5rem;
+      opacity: 0.25; position: absolute; top: 1rem; inset-inline-end: 1.5rem;
       line-height: 1;
     }
-    .conclusion-title {
-      font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;
-      padding-top: 2rem;
-    }
+    .conclusion-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; padding-top: 1.5rem; }
     .conclusion-desc { font-size: 0.9rem; color: var(--light-gray); line-height: 1.7; }
 
     /* ─── FOOTER ─── */
-    footer {
-      background: var(--bg2); border-top: 1px solid var(--border);
-      text-align: center; padding: 2.5rem;
-    }
+    footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 2.5rem; }
     footer .footer-logo {
       font-size: 1.6rem; font-weight: 800;
       background: linear-gradient(135deg, var(--blue), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;
     }
     footer p { color: var(--gray); font-size: 0.8rem; }
 
-    /* ─── ANIMATIONS ─── */
-    .fade-in {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    /* ─── FADE IN ─── */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ─── CHART BAR ─── */
-    .bar-chart { margin-top: 2rem; }
-    .bar-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    .bar-label { width: 130px; font-size: 0.85rem; color: var(--light-gray); text-align: right; flex-shrink: 0; }
-    .bar-wrap { flex: 1; background: var(--bg3); border-radius: 4px; height: 28px; overflow: hidden; }
-    .bar-fill {
-      height: 100%; border-radius: 4px;
-      display: flex; align-items: center; padding-right: 0.75rem;
-      font-size: 0.8rem; font-weight: 700; color: white;
-      transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:600px){
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hero h1 { letter-spacing: -1px; }
+      .hero-stats { gap: 1.5rem; }
     }
   </style>
 </head>
@@ -347,57 +318,61 @@
 <nav>
   <div class="nav-logo">revolut</div>
   <div class="nav-links">
-    <a href="#overview">סקירה</a>
-    <a href="#swot">SWOT</a>
-    <a href="#israel">ישראל</a>
-    <a href="#bit">ביט vs Revolut</a>
-    <a href="#conclusion">מסקנות</a>
+    <a href="#overview" data-en="Overview" data-he="סקירה">Overview</a>
+    <a href="#swot" data-en="SWOT" data-he="SWOT">SWOT</a>
+    <a href="#israel" data-en="Israel" data-he="ישראל">Israel</a>
+    <a href="#bit" data-en="Revolut vs Bit" data-he="Revolut vs ביט">Revolut vs Bit</a>
+    <a href="#conclusion" data-en="Conclusion" data-he="מסקנות">Conclusion</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+      <button class="lang-btn" onclick="setLang('he')" id="btn-he">HE</button>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-badge">
-    <span>●</span> ניתוח עדכני 2025
+    <span>●</span>
+    <span data-en="Updated Analysis 2025" data-he="ניתוח עדכני 2025">Updated Analysis 2025</span>
   </div>
   <h1>
     <span>Revolut</span><br/>
-    ניתוח מעמיק
+    <span data-en="In-Depth Analysis" data-he="ניתוח מעמיק">In-Depth Analysis</span>
   </h1>
-  <p class="hero-sub">
-    מבט מלא על הפינטק שמשנה את עולם הכסף — מצב נוכחי, SWOT, הכניסה לישראל,
-    והמאבק מול ביט של בנק הפועלים
+  <p class="hero-sub" data-en="A comprehensive look at the fintech reshaping global finance — current status, SWOT, entry into Israel, and the battle against Bit by Bank Hapoalim." data-he="מבט מקיף על הפינטק שמשנה את עולם הכסף — מצב נוכחי, SWOT, הכניסה לישראל, והמאבק מול ביט של בנק הפועלים.">
+    A comprehensive look at the fintech reshaping global finance — current status, SWOT, entry into Israel, and the battle against Bit by Bank Hapoalim.
   </p>
 
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="val" id="stat-users">0</div>
-      <div class="lbl">לקוחות גלובלי</div>
+      <div class="lbl" data-en="Global Customers" data-he="לקוחות גלובלי">Global Customers</div>
     </div>
     <div class="hero-stat">
       <div class="val" id="stat-val">$0B</div>
-      <div class="lbl">שווי חברה</div>
+      <div class="lbl" data-en="Valuation" data-he="שווי חברה">Valuation</div>
     </div>
     <div class="hero-stat">
       <div class="val" id="stat-rev">$0B</div>
-      <div class="lbl">הכנסות 2024</div>
+      <div class="lbl" data-en="Revenue 2024" data-he="הכנסות 2024">Revenue 2024</div>
     </div>
     <div class="hero-stat">
       <div class="val" id="stat-profit">$0B</div>
-      <div class="lbl">רווח 2024</div>
+      <div class="lbl" data-en="Profit 2024" data-he="רווח 2024">Profit 2024</div>
     </div>
   </div>
 
   <div class="hero-cta">
-    <a href="#overview" class="btn-primary">קרא ניתוח מלא</a>
-    <a href="#swot" class="btn-outline">SWOT Analysis</a>
+    <a href="#overview" class="btn-primary" data-en="Read Full Analysis" data-he="קרא ניתוח מלא">Read Full Analysis</a>
+    <a href="#swot" class="btn-outline" data-en="SWOT Analysis" data-he="ניתוח SWOT">SWOT Analysis</a>
   </div>
 
   <div class="scroll-hint">
-    <span>גלול למטה</span>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="6 9 12 15 18 9"></polyline>
-    </svg>
+    <span data-en="Scroll down" data-he="גלול למטה">Scroll down</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
   </div>
 </div>
 
@@ -406,82 +381,69 @@
 <!-- OVERVIEW -->
 <section id="overview">
   <div class="fade-in">
-    <div class="section-label">סקירה כללית</div>
-    <h2>Revolut במבט על</h2>
-    <p class="section-sub">
-      נוסדה ב-2015 על ידי Nikolay Storonsky ו-Vlad Yatsenko, Revolut צמחה מכרטיס נסיעות
-      ללא עמלות לפלטפורם פיננסי מלא עם 65+ מיליון לקוחות ב-38 מדינות.
+    <div class="section-label" data-en="General Overview" data-he="סקירה כללית">General Overview</div>
+    <h2 data-en="Revolut at a Glance" data-he="Revolut במבט על">Revolut at a Glance</h2>
+    <p class="section-sub" data-en="Founded in 2015 by Nikolay Storonsky and Vlad Yatsenko, Revolut grew from a no-fee travel card into a full financial platform with 65M+ customers across 38 countries." data-he="נוסדה ב-2015 על ידי Nikolay Storonsky ו-Vlad Yatsenko, Revolut צמחה מכרטיס נסיעות ללא עמלות לפלטפורמה פיננסית מלאה עם 65M+ לקוחות ב-38 מדינות.">
+      Founded in 2015 by Nikolay Storonsky and Vlad Yatsenko, Revolut grew from a no-fee travel card into a full financial platform with 65M+ customers across 38 countries.
     </p>
 
     <div class="metrics-grid">
-      <div class="metric-card" style="--accent: var(--blue)">
+      <div class="metric-card" style="--accent:var(--blue)">
         <div class="metric-val">65M+</div>
-        <div class="metric-label">לקוחות גלובלי</div>
-        <div class="metric-sub">+38% YoY | ספטמבר 2025</div>
+        <div class="metric-label" data-en="Global Customers" data-he="לקוחות גלובלי">Global Customers</div>
+        <div class="metric-sub" data-en="+38% YoY | September 2025" data-he="+38% YoY | ספטמבר 2025">+38% YoY | September 2025</div>
       </div>
-      <div class="metric-card" style="--accent: var(--purple)">
+      <div class="metric-card" style="--accent:var(--purple)">
         <div class="metric-val">$75B</div>
-        <div class="metric-label">שווי חברה</div>
-        <div class="metric-sub">נובמבר 2025 — עלייה מ-$45B</div>
+        <div class="metric-label" data-en="Company Valuation" data-he="שווי חברה">Company Valuation</div>
+        <div class="metric-sub" data-en="November 2025 — up from $45B" data-he="נובמבר 2025 — עלייה מ-$45B">November 2025 — up from $45B</div>
       </div>
-      <div class="metric-card" style="--accent: var(--green)">
+      <div class="metric-card" style="--accent:var(--green)">
         <div class="metric-val">$4.0B</div>
-        <div class="metric-label">הכנסות 2024</div>
-        <div class="metric-sub">+72% YoY — שיא מוחלט</div>
+        <div class="metric-label" data-en="Revenue 2024" data-he="הכנסות 2024">Revenue 2024</div>
+        <div class="metric-sub" data-en="+72% YoY — all-time high" data-he="+72% YoY — שיא מוחלט">+72% YoY — all-time high</div>
       </div>
-      <div class="metric-card" style="--accent: var(--green)">
+      <div class="metric-card" style="--accent:var(--green)">
         <div class="metric-val">$1.4B</div>
-        <div class="metric-label">רווח לפני מס 2024</div>
-        <div class="metric-sub">+149% YoY | מרווח 26%</div>
+        <div class="metric-label" data-en="Pre-tax Profit 2024" data-he="רווח לפני מס 2024">Pre-tax Profit 2024</div>
+        <div class="metric-sub" data-en="+149% YoY | 26% margin" data-he="+149% YoY | מרווח 26%">+149% YoY | 26% margin</div>
       </div>
-      <div class="metric-card" style="--accent: var(--blue-light)">
+      <div class="metric-card" style="--accent:var(--blue-light)">
         <div class="metric-val">$1.3T</div>
-        <div class="metric-label">נפח עסקאות שנתי</div>
-        <div class="metric-sub">+52% YoY</div>
+        <div class="metric-label" data-en="Annual Transaction Volume" data-he="נפח עסקאות שנתי">Annual Transaction Volume</div>
+        <div class="metric-sub" data-en="+52% YoY" data-he="+52% YoY">+52% YoY</div>
       </div>
-      <div class="metric-card" style="--accent: var(--yellow)">
+      <div class="metric-card" style="--accent:var(--yellow)">
         <div class="metric-val">#1</div>
-        <div class="metric-label">אפליקציית פיננסים</div>
-        <div class="metric-sub">19 מדינות | Top 3 ב-26 מדינות</div>
+        <div class="metric-label" data-en="Finance App" data-he="אפליקציית פיננסים">Finance App</div>
+        <div class="metric-sub" data-en="19 countries | Top 3 in 26 countries" data-he="19 מדינות | Top 3 ב-26 מדינות">19 countries | Top 3 in 26 countries</div>
       </div>
     </div>
   </div>
 
-  <!-- Revenue bar chart -->
-  <div class="fade-in" style="margin-top: 3rem;">
-    <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">צמיחת הכנסות שנתית</h3>
-    <p class="section-sub" style="margin-bottom: 1rem;">עלייה עקבית ב-4 שנים רצופות של רווחיות</p>
-
+  <div class="fade-in" style="margin-top:3rem">
+    <h3 style="margin-bottom:0.5rem;font-size:1.3rem" data-en="Annual Revenue Growth" data-he="צמיחת הכנסות שנתית">Annual Revenue Growth</h3>
+    <p class="section-sub" style="margin-bottom:1rem" data-en="Four consecutive years of profitability with explosive growth." data-he="ארבע שנות רווחיות רצופות עם צמיחה אקספלוסיבית.">Four consecutive years of profitability with explosive growth.</p>
     <div class="bar-chart">
       <div class="bar-row">
         <div class="bar-label">2021</div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width: 0; background: linear-gradient(90deg, #0666eb, #5bb8ff)" data-width="18%">$636M</div>
-        </div>
+        <div class="bar-wrap"><div class="bar-fill" data-width="18" style="background:linear-gradient(90deg,#0666eb,#5bb8ff);width:0">$636M</div></div>
       </div>
       <div class="bar-row">
         <div class="bar-label">2022</div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width: 0; background: linear-gradient(90deg, #0666eb, #5bb8ff)" data-width="31%">$1.1B</div>
-        </div>
+        <div class="bar-wrap"><div class="bar-fill" data-width="29" style="background:linear-gradient(90deg,#0666eb,#5bb8ff);width:0">$1.1B</div></div>
       </div>
       <div class="bar-row">
         <div class="bar-label">2023</div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width: 0; background: linear-gradient(90deg, #0666eb, #7b2fbe)" data-width="58%">$2.2B</div>
-        </div>
+        <div class="bar-wrap"><div class="bar-fill" data-width="57" style="background:linear-gradient(90deg,#0666eb,#7b2fbe);width:0">$2.2B</div></div>
       </div>
       <div class="bar-row">
         <div class="bar-label">2024</div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width: 0; background: linear-gradient(90deg, #7b2fbe, #0666eb)" data-width="100%">$4.0B (+72%)</div>
-        </div>
+        <div class="bar-wrap"><div class="bar-fill" data-width="100" style="background:linear-gradient(90deg,#7b2fbe,#0666eb);width:0">$4.0B (+72%)</div></div>
       </div>
       <div class="bar-row">
-        <div class="bar-label">2025 (אומדן)</div>
-        <div class="bar-wrap">
-          <div class="bar-fill" style="width: 0; background: linear-gradient(90deg, #00d47e, #0666eb)" data-width="100%; opacity:0.7" data-width2="133%">~$5.3B</div>
-        </div>
+        <div class="bar-label" data-en="2025 (est.)" data-he="2025 (אומדן)">2025 (est.)</div>
+        <div class="bar-wrap"><div class="bar-fill" data-width="100" style="background:linear-gradient(90deg,#00d47e,#0666eb);opacity:0.75;width:0" data-en="~$5.3B" data-he="~$5.3B">~$5.3B</div></div>
       </div>
     </div>
   </div>
@@ -492,49 +454,49 @@
 <!-- SWOT -->
 <section id="swot">
   <div class="fade-in">
-    <div class="section-label">ניתוח אסטרטגי</div>
-    <h2>ניתוח SWOT</h2>
-    <p class="section-sub">הערכה מקיפה של חוזקות, חולשות, הזדמנויות ואיומים</p>
+    <div class="section-label" data-en="Strategic Analysis" data-he="ניתוח אסטרטגי">Strategic Analysis</div>
+    <h2 data-en="SWOT Analysis" data-he="ניתוח SWOT">SWOT Analysis</h2>
+    <p class="section-sub" data-en="A comprehensive assessment of Revolut's strengths, weaknesses, opportunities and threats." data-he="הערכה מקיפה של חוזקות, חולשות, הזדמנויות ואיומים של Revolut.">A comprehensive assessment of Revolut's strengths, weaknesses, opportunities and threats.</p>
 
     <div class="swot-grid">
-      <div class="swot-card" style="--swot-color: var(--green)">
-        <div class="swot-title">💪 חוזקות (Strengths)</div>
-        <div class="swot-item"><div class="swot-dot"></div><span>65M+ לקוחות גלובלי, נוכחות ב-38 מדינות</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>מוצר All-in-One: בנקאות, קריפטו, השקעות, ביטוח</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>טכנולוגיה מתקדמת, UX מצוין ומוביל תעשייה</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>שווי $75B, רווחיות גבוהה — $1.4B רווח ב-2024</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>עמלות נמוכות, שערי המרה אטרקטיביים מאוד</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>מותג חזק, צמיחה אורגנית גבוהה</span></div>
+      <div class="swot-card" style="--swot-color:var(--green)">
+        <div class="swot-title" data-en="💪 Strengths" data-he="💪 חוזקות">💪 Strengths</div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="65M+ customers globally, present in 38 countries" data-he="65M+ לקוחות גלובלי, נוכחות ב-38 מדינות">65M+ customers globally, present in 38 countries</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="All-in-One product: banking, crypto, investments, insurance" data-he="מוצר All-in-One: בנקאות, קריפטו, השקעות, ביטוח">All-in-One product: banking, crypto, investments, insurance</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Advanced technology, industry-leading UX" data-he="טכנולוגיה מתקדמת, UX מוביל תעשייה">Advanced technology, industry-leading UX</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="$75B valuation, high profitability — $1.4B profit in 2024" data-he="שווי $75B, רווחיות גבוהה — $1.4B רווח ב-2024">$75B valuation, high profitability — $1.4B profit in 2024</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Low fees, highly competitive FX rates" data-he="עמלות נמוכות, שערי המרה אטרקטיביים מאוד">Low fees, highly competitive FX rates</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Strong brand, high organic growth" data-he="מותג חזק, צמיחה אורגנית גבוהה">Strong brand, high organic growth</span></div>
       </div>
 
-      <div class="swot-card" style="--swot-color: var(--red)">
-        <div class="swot-title">⚠️ חולשות (Weaknesses)</div>
-        <div class="swot-item"><div class="swot-dot"></div><span>תלות גבוהה בשוקי קריפטו ותנודתיות הכנסות</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>תמיכת לקוחות חלשה — ציון 2.8/5 בממוצע</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>ביקורת רגולטורית AML — קנס €3.5M ליטא 2025</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>חוסר נוכחות פיזית — אין סניפים</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>תלות ברישיונות בנקאיים בכל שוק חדש</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>3,242 תלונות הונאה ב-UK ב-2024 — הגבוה מכולם</span></div>
+      <div class="swot-card" style="--swot-color:var(--red)">
+        <div class="swot-title" data-en="⚠️ Weaknesses" data-he="⚠️ חולשות">⚠️ Weaknesses</div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="High dependency on volatile crypto markets" data-he="תלות גבוהה בשוקי קריפטו ותנודתיות הכנסות">High dependency on volatile crypto markets</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Weak customer support — average score 2.8/5" data-he="תמיכת לקוחות חלשה — ציון 2.8/5 בממוצע">Weak customer support — average score 2.8/5</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="AML regulatory criticism — €3.5M fine in Lithuania (2025)" data-he="ביקורת רגולטורית AML — קנס €3.5M ליטא 2025">AML regulatory criticism — €3.5M fine in Lithuania (2025)</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="No physical presence — zero branches" data-he="חוסר נוכחות פיזית — אין סניפים">No physical presence — zero branches</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Dependent on banking licenses in each new market" data-he="תלות ברישיונות בנקאיים בכל שוק חדש">Dependent on banking licenses in each new market</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="3,242 fraud complaints in UK in 2024 — highest of any bank" data-he="3,242 תלונות הונאה ב-UK ב-2024 — הגבוה מכולם">3,242 fraud complaints in UK in 2024 — highest of any bank</span></div>
       </div>
 
-      <div class="swot-card" style="--swot-color: var(--blue)">
-        <div class="swot-title">🚀 הזדמנויות (Opportunities)</div>
-        <div class="swot-item"><div class="swot-dot"></div><span>כניסה לשוק ישראל — 9M לקוחות פוטנציאליים</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>Lean Bank ישראל — פיקדונות ואשראי בריבית תחרותית</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>שוק B2B גלובלי — $1B הכנסות עסקיות שנתיות</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>IPO פוטנציאלי ב-2025/2026</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>הרחבה להודו, מכסיקו ודרום אמריקה</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>הכפלת בסיס לקוחות ל-100M עד סוף 2025</span></div>
+      <div class="swot-card" style="--swot-color:var(--blue)">
+        <div class="swot-title" data-en="🚀 Opportunities" data-he="🚀 הזדמנויות">🚀 Opportunities</div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Entry into Israel — 9M potential customers" data-he="כניסה לשוק ישראל — 9M לקוחות פוטנציאליים">Entry into Israel — 9M potential customers</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Israel Lean Bank — deposits and credit at competitive rates" data-he="Lean Bank ישראל — פיקדונות ואשראי בריבית תחרותית">Israel Lean Bank — deposits and credit at competitive rates</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Global B2B market — $1B annual business revenue" data-he="שוק B2B גלובלי — $1B הכנסות עסקיות שנתיות">Global B2B market — $1B annual business revenue</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Potential IPO in 2025/2026" data-he="IPO פוטנציאלי ב-2025/2026">Potential IPO in 2025/2026</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Expansion into India, Mexico, and South America" data-he="הרחבה להודו, מכסיקו ודרום אמריקה">Expansion into India, Mexico, and South America</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Doubling customer base to 100M by end of 2025" data-he="הכפלת בסיס לקוחות ל-100M עד סוף 2025">Doubling customer base to 100M by end of 2025</span></div>
       </div>
 
-      <div class="swot-card" style="--swot-color: var(--yellow)">
-        <div class="swot-title">🛡️ איומים (Threats)</div>
-        <div class="swot-item"><div class="swot-dot"></div><span>תחרות מבנקים מסורתיים המתחדשים דיגיטלית</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>רגולציה מחמירה — EU, UK, ישראל</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>מתחרים: Wise, N26, Monzo, Nubank, Chime</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>סיכוני סייבר ואבטחת מידע בסקייל גלובלי</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>עלויות גיוס הון גבוהות לרישיון Lean Bank</span></div>
-        <div class="swot-item"><div class="swot-dot"></div><span>ירידת ערך קריפטו — תרחיש 2022 עלול לחזור</span></div>
+      <div class="swot-card" style="--swot-color:var(--yellow)">
+        <div class="swot-title" data-en="🛡️ Threats" data-he="🛡️ איומים">🛡️ Threats</div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Competition from traditional banks going digital" data-he="תחרות מבנקים מסורתיים המתחדשים דיגיטלית">Competition from traditional banks going digital</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Increasing regulation — EU, UK, Israel" data-he="רגולציה מחמירה — EU, UK, ישראל">Increasing regulation — EU, UK, Israel</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Competitors: Wise, N26, Monzo, Nubank, Chime" data-he="מתחרים: Wise, N26, Monzo, Nubank, Chime">Competitors: Wise, N26, Monzo, Nubank, Chime</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Cybersecurity risks at global scale" data-he="סיכוני סייבר ואבטחת מידע בסקייל גלובלי">Cybersecurity risks at global scale</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="High capital requirements for Lean Bank license" data-he="עלויות גיוס הון גבוהות לרישיון Lean Bank">High capital requirements for Lean Bank license</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span data-en="Crypto crash risk — 2022 scenario could repeat" data-he="ירידת ערך קריפטו — תרחיש 2022 עלול לחזור">Crypto crash risk — 2022 scenario could repeat</span></div>
       </div>
     </div>
   </div>
@@ -545,11 +507,10 @@
 <!-- ISRAEL -->
 <section id="israel">
   <div class="fade-in">
-    <div class="section-label">שוק ישראל</div>
-    <h2>הכניסה לישראל</h2>
-    <p class="section-sub">
-      ישראל מזוהה כשוק אסטרטגי — שוק פיננסי מרוכז עם בנקים שרשמו
-      ₪30B רווח ב-2024, ולקוחות המחפשים אלטרנטיבות
+    <div class="section-label" data-en="Israeli Market" data-he="שוק ישראל">Israeli Market</div>
+    <h2 data-en="Entry into Israel" data-he="הכניסה לישראל">Entry into Israel</h2>
+    <p class="section-sub" data-en="Israel is identified as a strategic market — a concentrated financial sector where banks earned ₪30B profit in 2024, and customers are actively seeking alternatives." data-he="ישראל מזוהה כשוק אסטרטגי — מגזר פיננסי מרוכז שבו הבנקים רשמו ₪30B רווח ב-2024, ולקוחות מחפשים אלטרנטיבות.">
+      Israel is identified as a strategic market — a concentrated financial sector where banks earned ₪30B profit in 2024, and customers are actively seeking alternatives.
     </p>
 
     <div class="timeline">
@@ -557,67 +518,66 @@
         <div class="tl-dot"></div>
         <div class="tl-card">
           <div class="tl-year">2023</div>
-          <div class="tl-title">קוד זיהוי #78</div>
-          <div class="tl-desc">Revolut קיבלה קוד זיהוי מבנק ישראל — הצעד הראשון להפיכת שחקן רשמי בשוק המקומי</div>
+          <div class="tl-title" data-en="Identification Code #78" data-he="קוד זיהוי #78">Identification Code #78</div>
+          <div class="tl-desc" data-en="Revolut received identification code from Bank of Israel — the first step to becoming an official player in the local market." data-he="Revolut קיבלה קוד זיהוי מבנק ישראל — הצעד הראשון להפיכת שחקן רשמי בשוק המקומי.">Revolut received identification code from Bank of Israel — the first step to becoming an official player in the local market.</div>
         </div>
       </div>
 
       <div class="tl-item">
-        <div class="tl-dot" style="background: var(--purple)"></div>
+        <div class="tl-dot" style="background:var(--purple)"></div>
         <div class="tl-card">
-          <div class="tl-year">אוגוסט 2024</div>
-          <div class="tl-title">מספר בנקאי רשמי</div>
-          <div class="tl-desc">בנק ישראל הקצה ל-Revolut מספר בנקאי — צעד משמעותי לעבר שחקן בנקאי מוסמך</div>
+          <div class="tl-year" data-en="August 2024" data-he="אוגוסט 2024">August 2024</div>
+          <div class="tl-title" data-en="Official Banking Number" data-he="מספר בנקאי רשמי">Official Banking Number</div>
+          <div class="tl-desc" data-en="Bank of Israel assigned Revolut an official banking number — a significant step toward becoming a licensed banking player." data-he="בנק ישראל הקצה ל-Revolut מספר בנקאי רשמי — צעד משמעותי לעבר שחקן בנקאי מוסמך.">Bank of Israel assigned Revolut an official banking number — a significant step toward becoming a licensed banking player.</div>
         </div>
       </div>
 
       <div class="tl-item">
-        <div class="tl-dot" style="background: var(--green)"></div>
+        <div class="tl-dot" style="background:var(--green)"></div>
         <div class="tl-card">
-          <div class="tl-year">יולי 2025</div>
-          <div class="tl-title">רישיון תשלומים</div>
-          <div class="tl-desc">רשות ני"ע הישראלית העניקה רישיון תשלומים ל-Revolut יחד עם Rapyd, Airwallex ו-Mesh — כולל החזקת כספי לקוחות ו-FX</div>
+          <div class="tl-year" data-en="July 2025" data-he="יולי 2025">July 2025</div>
+          <div class="tl-title" data-en="Payment License Granted" data-he="רישיון תשלומים">Payment License Granted</div>
+          <div class="tl-desc" data-en="Israel's Securities Authority granted Revolut a payment license alongside Rapyd, Airwallex, and Mesh — including holding customer funds and FX." data-he="רשות ני&quot;ע הישראלית העניקה רישיון תשלומים ל-Revolut יחד עם Rapyd, Airwallex ו-Mesh — כולל החזקת כספי לקוחות ו-FX.">Israel's Securities Authority granted Revolut a payment license alongside Rapyd, Airwallex, and Mesh — including holding customer funds and FX.</div>
         </div>
       </div>
 
       <div class="tl-item">
-        <div class="tl-dot" style="background: var(--yellow)"></div>
+        <div class="tl-dot" style="background:var(--yellow)"></div>
         <div class="tl-card">
-          <div class="tl-year">2025 — בתהליך</div>
-          <div class="tl-title">בקשת Lean Bank</div>
-          <div class="tl-desc">Revolut בדיאלוג עם בנק ישראל להשגת רישיון בנק רזה — מה שיאפשר קבלת פיקדונות ומתן אשראי</div>
+          <div class="tl-year" data-en="2025 — In progress" data-he="2025 — בתהליך">2025 — In progress</div>
+          <div class="tl-title" data-en="Lean Bank Application" data-he="בקשת Lean Bank">Lean Bank Application</div>
+          <div class="tl-desc" data-en="Revolut in active dialogue with Bank of Israel for a lean banking license — which would allow accepting deposits and extending credit." data-he="Revolut בדיאלוג פעיל עם בנק ישראל להשגת רישיון בנק רזה — מה שיאפשר קבלת פיקדונות ומתן אשראי.">Revolut in active dialogue with Bank of Israel for a lean banking license — which would allow accepting deposits and extending credit.</div>
         </div>
       </div>
 
       <div class="tl-item">
-        <div class="tl-dot" style="background: var(--blue-light)"></div>
+        <div class="tl-dot" style="background:var(--blue-light)"></div>
         <div class="tl-card">
           <div class="tl-year">2026+</div>
-          <div class="tl-title">השקה בנקאית מלאה</div>
-          <div class="tl-desc">עם אישור Lean Bank — Revolut תתחרה ישירות מול הבנקים הישראליים בפיקדונות, אשראי ומטבע חוץ</div>
+          <div class="tl-title" data-en="Full Banking Launch" data-he="השקה בנקאית מלאה">Full Banking Launch</div>
+          <div class="tl-desc" data-en="With Lean Bank approval — Revolut will compete directly with Israeli banks on deposits, credit, and foreign exchange." data-he="עם אישור Lean Bank — Revolut תתחרה ישירות מול הבנקים הישראליים בפיקדונות, אשראי ומטבע חוץ.">With Lean Bank approval — Revolut will compete directly with Israeli banks on deposits, credit, and foreign exchange.</div>
         </div>
       </div>
     </div>
 
-    <!-- Threat cards for Israel -->
-    <div style="margin-top: 3rem">
-      <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem; color: var(--red)">האיום על השוק הפיננסי הישראלי</h3>
+    <div style="margin-top:3rem">
+      <h3 style="margin-bottom:1.5rem;font-size:1.3rem;color:var(--red)" data-en="Threats to the Israeli Financial Market" data-he="האיום על השוק הפיננסי הישראלי">Threats to the Israeli Financial Market</h3>
       <div class="threats-grid">
         <div class="threat-card">
-          <div class="threat-title">עמלות נמוכות</div>
-          <div class="threat-desc">הסבת לחץ על רווחי הבנקים הישראליים שגבו ₪30B ב-2024. Revolut מציעה עמלות שבריר מאלה של הבנקים המסורתיים.</div>
+          <div class="threat-title" data-en="Low Fees" data-he="עמלות נמוכות">Low Fees</div>
+          <div class="threat-desc" data-en="Puts pressure on the profits of Israeli banks that earned ₪30B in 2024. Revolut offers a fraction of the fees charged by traditional banks." data-he="מסב לחץ על רווחי הבנקים הישראליים שגבו ₪30B ב-2024. Revolut מציעה שבריר מהעמלות של הבנקים המסורתיים.">Puts pressure on the profits of Israeli banks that earned ₪30B in 2024. Revolut offers a fraction of the fees charged by traditional banks.</div>
         </div>
         <div class="threat-card">
-          <div class="threat-title">מטבע חוץ אטרקטיבי</div>
-          <div class="threat-desc">שערי המרה תחרותיים ביחס לכל בנק ישראלי. ישראלי הנוסע לחו"ל יכול לחסוך אלפי שקלים בשנה.</div>
+          <div class="threat-title" data-en="Competitive FX Rates" data-he="מטבע חוץ אטרקטיבי">Competitive FX Rates</div>
+          <div class="threat-desc" data-en="Competitive exchange rates compared to any Israeli bank. An Israeli traveling abroad can save thousands of shekels annually." data-he="שערי המרה תחרותיים ביחס לכל בנק ישראלי. ישראלי הנוסע לחו&quot;ל יכול לחסוך אלפי שקלים בשנה.">Competitive exchange rates compared to any Israeli bank. An Israeli traveling abroad can save thousands of shekels annually.</div>
         </div>
         <div class="threat-card">
-          <div class="threat-title">פיקדונות בריבית גבוהה</div>
-          <div class="threat-desc">בנקים ישראליים מציעים 0.01% פיקדון בעוד ריבית בנק ישראל היא 4.5%. Lean Bank יאפשר ל-Revolut לגבות פיקדונות בריבית תחרותית.</div>
+          <div class="threat-title" data-en="High-Yield Deposits" data-he="פיקדונות בריבית גבוהה">High-Yield Deposits</div>
+          <div class="threat-desc" data-en="Israeli banks offer 0.01% on deposits while the Bank of Israel rate is 4.5%. Lean Bank will allow Revolut to attract deposits with competitive interest." data-he="בנקים ישראליים מציעים 0.01% פיקדון בעוד ריבית בנק ישראל היא 4.5%. Lean Bank יאפשר ל-Revolut לגבות פיקדונות בריבית תחרותית.">Israeli banks offer 0.01% on deposits while the Bank of Israel rate is 4.5%. Lean Bank will allow Revolut to attract deposits with competitive interest.</div>
         </div>
         <div class="threat-card">
-          <div class="threat-title">מיקוד בדור הצעיר</div>
-          <div class="threat-desc">דור ה-Z ו-Millennials מחפשים חוויה digital-first. Revolut מותאמת בדיוק לפלח הזה שהבנקים המסורתיים מתקשים לשמר.</div>
+          <div class="threat-title" data-en="Youth-First Strategy" data-he="מיקוד בדור הצעיר">Youth-First Strategy</div>
+          <div class="threat-desc" data-en="Gen Z and Millennials demand a digital-first experience. Revolut is perfectly tailored for this segment, which traditional banks struggle to retain." data-he="דור ה-Z ו-Millennials מחפשים חוויה digital-first. Revolut מותאמת בדיוק לפלח הזה שהבנקים המסורתיים מתקשים לשמר.">Gen Z and Millennials demand a digital-first experience. Revolut is perfectly tailored for this segment, which traditional banks struggle to retain.</div>
         </div>
       </div>
     </div>
@@ -629,106 +589,101 @@
 <!-- BIT VS REVOLUT -->
 <section id="bit">
   <div class="fade-in">
-    <div class="section-label">השוואה</div>
-    <h2>Revolut vs ביט</h2>
-    <p class="section-sub">
-      ביט שולטת בתשלומים P2P ישראליים עם 90% נתח שוק ו-3.5M משתמשים.
-      אבל האם היא מוכנה לתחרות הגלובלית?
-    </p>
+    <div class="section-label" data-en="Comparison" data-he="השוואה">Comparison</div>
+    <h2 data-en="Revolut vs Bit" data-he="Revolut vs ביט">Revolut vs Bit</h2>
+    <p class="section-sub" data-en="Bit dominates Israeli P2P payments with 90% market share and 3.5M users. But is it ready for global competition?" data-he="ביט שולטת בתשלומי P2P ישראליים עם 90% נתח שוק ו-3.5M משתמשים. אבל האם היא מוכנה לתחרות הגלובלית?">Bit dominates Israeli P2P payments with 90% market share and 3.5M users. But is it ready for global competition?</p>
 
-    <!-- Bit stats -->
-    <div class="metrics-grid" style="margin-bottom: 3rem">
-      <div class="metric-card" style="--accent: #006eff">
+    <div class="metrics-grid" style="margin-bottom:3rem">
+      <div class="metric-card" style="--accent:#006eff">
         <div class="metric-val">3.5M</div>
-        <div class="metric-label">משתמשים פעילים</div>
-        <div class="metric-sub">2/3 — לא לקוחות הפועלים בלבד</div>
+        <div class="metric-label" data-en="Active Users (Bit)" data-he="משתמשים פעילים (ביט)">Active Users (Bit)</div>
+        <div class="metric-sub" data-en="2/3 are not Bank Hapoalim customers" data-he="2/3 — לא לקוחות הפועלים בלבד">2/3 are not Bank Hapoalim customers</div>
       </div>
-      <div class="metric-card" style="--accent: #006eff">
+      <div class="metric-card" style="--accent:#006eff">
         <div class="metric-val">90%</div>
-        <div class="metric-label">נתח שוק ישראלי</div>
-        <div class="metric-sub">בתשלומי P2P דיגיטלי</div>
+        <div class="metric-label" data-en="Israeli Market Share" data-he="נתח שוק ישראלי">Israeli Market Share</div>
+        <div class="metric-sub" data-en="In digital P2P payments" data-he="בתשלומי P2P דיגיטלי">In digital P2P payments</div>
       </div>
-      <div class="metric-card" style="--accent: #006eff">
+      <div class="metric-card" style="--accent:#006eff">
         <div class="metric-val">₪29.4B</div>
-        <div class="metric-label">העברות שנתיות</div>
-        <div class="metric-sub">₪2.45B בחודש בממוצע</div>
+        <div class="metric-label" data-en="Annual Transfers" data-he="העברות שנתיות">Annual Transfers</div>
+        <div class="metric-sub" data-en="₪2.45B per month on average" data-he="₪2.45B בחודש בממוצע">₪2.45B per month on average</div>
       </div>
-      <div class="metric-card" style="--accent: var(--red)">
+      <div class="metric-card" style="--accent:var(--red)">
         <div class="metric-val">₪700M-</div>
-        <div class="metric-label">הפסד מצטבר</div>
-        <div class="metric-sub">מאז הקמה — הפסד תפעולי</div>
+        <div class="metric-label" data-en="Cumulative Loss" data-he="הפסד מצטבר">Cumulative Loss</div>
+        <div class="metric-sub" data-en="Since founding — operational loss" data-he="מאז הקמה — הפסד תפעולי">Since founding — operational loss</div>
       </div>
     </div>
 
-    <!-- Comparison table -->
     <table class="comparison-table">
       <thead>
         <tr>
-          <th class="th-cat">קטגוריה</th>
+          <th class="th-cat" data-en="Category" data-he="קטגוריה">Category</th>
           <th class="th-revolut">🌍 Revolut</th>
-          <th class="th-bit">🇮🇱 ביט</th>
+          <th class="th-bit" data-en="🇮🇱 Bit" data-he="🇮🇱 ביט">🇮🇱 Bit</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>בסיס לקוחות</td>
-          <td class="tag-win">65M+ גלובלי</td>
-          <td>3.5M ישראל</td>
+          <td data-en="Customer base" data-he="בסיס לקוחות">Customer base</td>
+          <td class="tag-win" data-en="65M+ globally" data-he="65M+ גלובלי">65M+ globally</td>
+          <td data-en="3.5M Israel" data-he="3.5M ישראל">3.5M Israel</td>
         </tr>
         <tr>
-          <td>שוק יעד</td>
-          <td class="tag-win">38 מדינות</td>
-          <td>ישראל בלבד</td>
+          <td data-en="Target market" data-he="שוק יעד">Target market</td>
+          <td class="tag-win" data-en="38 countries" data-he="38 מדינות">38 countries</td>
+          <td data-en="Israel only" data-he="ישראל בלבד">Israel only</td>
         </tr>
         <tr>
-          <td>העברות מט"ח</td>
-          <td class="tag-win">✅ ללא עמלה (עד מגבלה)</td>
-          <td class="tag-miss">❌ לא קיים</td>
+          <td data-en="FX transfers" data-he='העברות מט"ח'>FX transfers</td>
+          <td class="tag-win" data-en="✅ No fee (up to limit)" data-he="✅ ללא עמלה (עד מגבלה)">✅ No fee (up to limit)</td>
+          <td class="tag-miss" data-en="❌ Not available" data-he="❌ לא קיים">❌ Not available</td>
         </tr>
         <tr>
-          <td>קריפטו</td>
-          <td class="tag-win">✅ 100+ מטבעות</td>
-          <td class="tag-miss">❌ לא קיים</td>
+          <td data-en="Crypto" data-he="קריפטו">Crypto</td>
+          <td class="tag-win" data-en="✅ 100+ currencies" data-he="✅ 100+ מטבעות">✅ 100+ currencies</td>
+          <td class="tag-miss" data-en="❌ Not available" data-he="❌ לא קיים">❌ Not available</td>
         </tr>
         <tr>
-          <td>השקעות</td>
-          <td class="tag-win">✅ מניות, ETF, מתכות</td>
-          <td class="tag-miss">❌ לא קיים</td>
+          <td data-en="Investments" data-he="השקעות">Investments</td>
+          <td class="tag-win" data-en="✅ Stocks, ETF, metals" data-he="✅ מניות, ETF, מתכות">✅ Stocks, ETF, metals</td>
+          <td class="tag-miss" data-en="❌ Not available" data-he="❌ לא קיים">❌ Not available</td>
         </tr>
         <tr>
-          <td>עמלות 2025</td>
-          <td class="tag-win">נמוכות / ללא</td>
-          <td>0.6% מ-₪25K בשנה</td>
+          <td data-en="Fees 2025" data-he="עמלות 2025">Fees 2025</td>
+          <td class="tag-win" data-en="Low / none" data-he="נמוכות / ללא">Low / none</td>
+          <td data-en="0.6% above ₪25K/year" data-he="0.6% מ-₪25K בשנה">0.6% above ₪25K/year</td>
         </tr>
         <tr>
-          <td>פיקדונות</td>
-          <td class="tag-win">✅ ריבית תחרותית</td>
-          <td>4% ל-3 חודשים</td>
+          <td data-en="Deposits" data-he="פיקדונות">Deposits</td>
+          <td class="tag-win" data-en="✅ Competitive interest" data-he="✅ ריבית תחרותית">✅ Competitive interest</td>
+          <td data-en="4% for 3 months" data-he="4% ל-3 חודשים">4% for 3 months</td>
         </tr>
         <tr>
-          <td>ממשק משתמש</td>
+          <td data-en="User Interface" data-he="ממשק משתמש">User Interface</td>
           <td class="tag-win">⭐⭐⭐⭐⭐</td>
           <td>⭐⭐⭐</td>
         </tr>
         <tr>
-          <td>תמיכת לקוחות</td>
-          <td>2.8/5 — חלש</td>
-          <td class="tag-win">דרך בנק הפועלים</td>
+          <td data-en="Customer support" data-he="תמיכת לקוחות">Customer support</td>
+          <td data-en="2.8/5 — weak" data-he="2.8/5 — חלש">2.8/5 — weak</td>
+          <td class="tag-win" data-en="Via Bank Hapoalim" data-he="דרך בנק הפועלים">Via Bank Hapoalim</td>
         </tr>
         <tr>
-          <td>תשלומי P2P מקומי</td>
-          <td>⚠️ בתהליך פריסה</td>
-          <td class="tag-win">✅ חזק מאוד</td>
+          <td data-en="Local P2P payments" data-he="תשלומי P2P מקומי">Local P2P payments</td>
+          <td data-en="⚠️ Being rolled out" data-he="⚠️ בתהליך פריסה">⚠️ Being rolled out</td>
+          <td class="tag-win" data-en="✅ Very strong" data-he="✅ חזק מאוד">✅ Very strong</td>
         </tr>
         <tr>
-          <td>רישיון בנקאי</td>
-          <td class="tag-win">UK + בדרך לישראל</td>
-          <td>דרך בנק הפועלים</td>
+          <td data-en="Banking license" data-he="רישיון בנקאי">Banking license</td>
+          <td class="tag-win" data-en="UK + en route to Israel" data-he="UK + בדרך לישראל">UK + en route to Israel</td>
+          <td data-en="Via Bank Hapoalim" data-he="דרך בנק הפועלים">Via Bank Hapoalim</td>
         </tr>
         <tr>
-          <td>שווי / גודל</td>
-          <td class="tag-win">$75B | חד קרן</td>
-          <td>חלק מבנק הפועלים</td>
+          <td data-en="Valuation / Size" data-he="שווי / גודל">Valuation / Size</td>
+          <td class="tag-win" data-en="$75B | Unicorn" data-he="$75B | חד קרן">$75B | Unicorn</td>
+          <td data-en="Part of Bank Hapoalim" data-he="חלק מבנק הפועלים">Part of Bank Hapoalim</td>
         </tr>
       </tbody>
     </table>
@@ -740,45 +695,33 @@
 <!-- CONCLUSION -->
 <section id="conclusion">
   <div class="fade-in">
-    <div class="section-label">סיכום</div>
-    <h2>מסקנות ומבט קדימה</h2>
-    <p class="section-sub">מה ניתן ללמוד מהניתוח ומה צפוי לקרות בשוק הפיננסי הישראלי</p>
+    <div class="section-label" data-en="Summary" data-he="סיכום">Summary</div>
+    <h2 data-en="Conclusions & Outlook" data-he="מסקנות ומבט קדימה">Conclusions & Outlook</h2>
+    <p class="section-sub" data-en="Key takeaways from the analysis and what to expect in Israel's financial market." data-he="תובנות מרכזיות מהניתוח ומה צפוי לקרות בשוק הפיננסי הישראלי.">Key takeaways from the analysis and what to expect in Israel's financial market.</p>
 
     <div class="conclusion-grid">
-      <div class="conclusion-card" style="--c-color: var(--blue)">
+      <div class="conclusion-card" style="--c-color:var(--blue)">
         <div class="conclusion-num">01</div>
-        <div class="conclusion-title">Revolut היא מכונת צמיחה</div>
-        <div class="conclusion-desc">
-          72% צמיחה בהכנסות, 38% בלקוחות, $1.4B רווח — Revolut הוכיחה שניתן לבנות
-          בנק רווחי ללא סניפים. עם $75B שווי, היא מהפינטקים החזקים בעולם.
-        </div>
+        <div class="conclusion-title" data-en="Revolut Is a Growth Machine" data-he="Revolut היא מכונת צמיחה">Revolut Is a Growth Machine</div>
+        <div class="conclusion-desc" data-en="72% revenue growth, 38% customer growth, $1.4B profit — Revolut has proven it's possible to build a profitable bank with zero branches. At $75B valuation, it is one of the most powerful fintechs in the world." data-he="72% צמיחה בהכנסות, 38% בלקוחות, $1.4B רווח — Revolut הוכיחה שניתן לבנות בנק רווחי ללא סניפים. עם $75B שווי, היא מהפינטקים החזקים בעולם.">72% revenue growth, 38% customer growth, $1.4B profit — Revolut has proven it's possible to build a profitable bank with zero branches. At $75B valuation, it is one of the most powerful fintechs in the world.</div>
       </div>
 
-      <div class="conclusion-card" style="--c-color: var(--green)">
+      <div class="conclusion-card" style="--c-color:var(--green)">
         <div class="conclusion-num">02</div>
-        <div class="conclusion-title">ישראל — שוק אסטרטגי</div>
-        <div class="conclusion-desc">
-          שוק פיננסי מרוכז, בנקים עם שוליים גבוהים, לקוחות מחפשים אלטרנטיבות.
-          רישיון התשלומים (יולי 2025) הוא הצעד הראשון בהשתלטות עתידית.
-        </div>
+        <div class="conclusion-title" data-en="Israel — A Strategic Market" data-he="ישראל — שוק אסטרטגי">Israel — A Strategic Market</div>
+        <div class="conclusion-desc" data-en="Concentrated financial market, banks with high margins, customers actively seeking alternatives. The payment license (July 2025) is the first step in a future takeover." data-he="שוק פיננסי מרוכז, בנקים עם שוליים גבוהים, לקוחות מחפשים אלטרנטיבות. רישיון התשלומים (יולי 2025) הוא הצעד הראשון בהשתלטות עתידית.">Concentrated financial market, banks with high margins, customers actively seeking alternatives. The payment license (July 2025) is the first step in a future takeover.</div>
       </div>
 
-      <div class="conclusion-card" style="--c-color: var(--yellow)">
+      <div class="conclusion-card" style="--c-color:var(--yellow)">
         <div class="conclusion-num">03</div>
-        <div class="conclusion-title">ביט תצטרך לחדש</div>
-        <div class="conclusion-desc">
-          ביט שולטת בתשלומי P2P, אך חסרים לה מגוון מוצרים. עמלות ב-2025 מחלישות
-          את מיצובה. בלי חדשנות מהירה — תאבד לקוחות צעירים.
-        </div>
+        <div class="conclusion-title" data-en="Bit Must Innovate" data-he="ביט תצטרך לחדש">Bit Must Innovate</div>
+        <div class="conclusion-desc" data-en="Bit dominates P2P payments, but lacks product diversity. Fees introduced in 2025 weaken its positioning. Without rapid innovation, it will lose young customers." data-he="ביט שולטת בתשלומי P2P, אך חסרים לה מגוון מוצרים. עמלות ב-2025 מחלישות את מיצובה. בלי חדשנות מהירה — תאבד לקוחות צעירים.">Bit dominates P2P payments, but lacks product diversity. Fees introduced in 2025 weaken its positioning. Without rapid innovation, it will lose young customers.</div>
       </div>
 
-      <div class="conclusion-card" style="--c-color: var(--purple)">
+      <div class="conclusion-card" style="--c-color:var(--purple)">
         <div class="conclusion-num">04</div>
-        <div class="conclusion-title">המנצח — הצרכן הישראלי</div>
-        <div class="conclusion-desc">
-          התחרות תביא ריביות גבוהות יותר על פיקדונות, עמלות נמוכות יותר על העברות,
-          ושירותים פיננסיים טובים יותר. המהפכה הפיננסית מגיעה לישראל.
-        </div>
+        <div class="conclusion-title" data-en="The Winner — Israeli Consumers" data-he="המנצח — הצרכן הישראלי">The Winner — Israeli Consumers</div>
+        <div class="conclusion-desc" data-en="Competition will bring higher deposit rates, lower transfer fees, and better financial services. The financial revolution is coming to Israel." data-he="התחרות תביא ריביות גבוהות יותר על פיקדונות, עמלות נמוכות יותר על העברות ושירותים פיננסיים טובים יותר. המהפכה הפיננסית מגיעה לישראל.">Competition will bring higher deposit rates, lower transfer fees, and better financial services. The financial revolution is coming to Israel.</div>
       </div>
     </div>
   </div>
@@ -787,20 +730,44 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">revolut</div>
-  <p>ניתוח מחקרי | 2025 | נתונים: Revolut Annual Report, Bank of Israel, Business of Apps</p>
-  <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #555">
-    מקורות: TechCrunch, Finance Magnates, Calcalist, The Marker, Globes
-  </p>
+  <p data-en="Research Analysis | 2025 | Data: Revolut Annual Report, Bank of Israel, Business of Apps" data-he="ניתוח מחקרי | 2025 | נתונים: Revolut Annual Report, Bank of Israel, Business of Apps">Research Analysis | 2025 | Data: Revolut Annual Report, Bank of Israel, Business of Apps</p>
+  <p style="margin-top:0.5rem;font-size:0.75rem;color:#555" data-en="Sources: TechCrunch, Finance Magnates, Calcalist, The Marker, Globes" data-he="מקורות: TechCrunch, Finance Magnates, כלכליסט, TheMarker, גלובס">Sources: TechCrunch, Finance Magnates, Calcalist, The Marker, Globes</p>
 </footer>
 
 <script>
-  // ─── Counter animation
+  // ─── LANGUAGE ENGINE ───────────────────────────────────────
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    const isHe = lang === 'he';
+
+    // Update html attributes
+    document.documentElement.lang = lang;
+    document.documentElement.dir = isHe ? 'rtl' : 'ltr';
+
+    // Toggle active button
+    document.getElementById('btn-en').classList.toggle('active', !isHe);
+    document.getElementById('btn-he').classList.toggle('active', isHe);
+
+    // Update all translated elements
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const key = `data-${lang}`;
+      const val = el.getAttribute(key);
+      if (val !== null) el.textContent = val;
+    });
+
+    // Update page title
+    document.title = isHe ? 'Revolut — ניתוח מעמיק 2025' : 'Revolut — In-Depth Analysis 2025';
+  }
+
+  // ─── COUNTER ANIMATION ────────────────────────────────────
   function animateCounter(el, target, suffix, duration = 2000) {
     const start = performance.now();
     const update = (time) => {
       const progress = Math.min((time - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.floor(eased * target * 10) / 10;
+      const current = Math.round(eased * target * 10) / 10;
       el.textContent = current + suffix;
       if (progress < 1) requestAnimationFrame(update);
     };
@@ -816,45 +783,33 @@
     }, 300);
   });
 
-  // ─── Intersection Observer for fade-in
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
+  // ─── INTERSECTION OBSERVER (fade-in) ──────────────────────
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // ─── Bar chart animation
+  // ─── BAR CHART ANIMATION ──────────────────────────────────
   const barObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
-          setTimeout(() => {
-            const w = bar.getAttribute('data-width') || bar.style.width;
-            bar.style.width = w;
-          }, i * 200);
-        });
-      }
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
+        setTimeout(() => { bar.style.width = bar.getAttribute('data-width') + '%'; }, i * 200);
+      });
+      barObserver.unobserve(entry.target);
     });
   }, { threshold: 0.3 });
-
   document.querySelectorAll('.bar-chart').forEach(el => barObserver.observe(el));
 
-  // ─── Active nav link
+  // ─── ACTIVE NAV LINK ─────────────────────────────────────
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
-
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
     navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'white' : '';
-      a.style.background = a.getAttribute('href') === '#' + current ? 'var(--bg4)' : '';
+      const active = a.getAttribute('href') === '#' + current;
+      a.classList.toggle('active-link', active);
     });
   });
 </script>
