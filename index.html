@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <!-- Chart.js v4 — used by the Market Growth Dashboard section -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Lucide icons — used by the Bit Playbook section -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     :root {
       --bg: #0d0d0d;
@@ -351,6 +353,94 @@
     .score-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--bg3); overflow: hidden; }
     .score-bar-fill { height: 100%; border-radius: 4px; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
 
+    /* ─── BIT PLAYBOOK ─── */
+    /* KPI Impact Cards — designed for executive scan: big number + context */
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    @media(max-width:900px){ .impact-grid { grid-template-columns: 1fr; } }
+    .impact-card {
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 20px;
+      padding: 2rem 1.75rem; position: relative; overflow: hidden;
+      border-top: 4px solid var(--impact-color, var(--blue));
+      transition: transform 0.2s;
+    }
+    .impact-card:hover { transform: translateY(-4px); }
+    .impact-icon {
+      width: 44px; height: 44px; border-radius: 12px; margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--impact-color, var(--blue));
+    }
+    /* Bold KPI number — primary attention anchor */
+    .impact-kpi {
+      font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -2px;
+      color: var(--impact-color, var(--blue)); margin-bottom: 0.35rem;
+    }
+    .impact-label { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .impact-metric { font-size: 0.78rem; color: var(--blue-light); font-weight: 600; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .impact-desc { font-size: 0.85rem; color: var(--light-gray); line-height: 1.65; }
+
+    /* Quarterly roadmap — horizontal 4-column grid with connector line */
+    .roadmap-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem;
+      position: relative;
+    }
+    /* Gradient connector line across all 4 quarters */
+    .roadmap-grid::before {
+      content: ''; position: absolute; top: 1.85rem; left: 6%; right: 6%; height: 2px;
+      background: linear-gradient(to right, var(--blue), var(--purple), var(--yellow), var(--green));
+      z-index: 0;
+    }
+    @media(max-width:900px){ .roadmap-grid { grid-template-columns: 1fr 1fr; } .roadmap-grid::before { display: none; } }
+    @media(max-width:500px){ .roadmap-grid { grid-template-columns: 1fr; } }
+    .quarter-card {
+      background: var(--bg4); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.25rem; position: relative; z-index: 1;
+    }
+    /* Quarter dot on top — sits on the connector line */
+    .quarter-dot {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--q-color, var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.85rem; color: white; border: 3px solid var(--bg);
+    }
+    .quarter-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--q-color, var(--blue)); margin-bottom: 0.2rem; }
+    .quarter-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .quarter-item {
+      display: flex; gap: 0.5rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--light-gray); line-height: 1.45; align-items: flex-start;
+    }
+    .quarter-item:last-child { border-bottom: none; }
+    .quarter-arrow { color: var(--q-color, var(--blue)); font-weight: 800; flex-shrink: 0; font-size: 0.75rem; margin-top: 0.15rem; }
+
+    /* Executive recommendation callout box */
+    .callout-box {
+      margin-top: 2.5rem; border-radius: 20px; padding: 2.25rem 2.5rem;
+      background: linear-gradient(135deg, rgba(6,102,235,0.1) 0%, rgba(123,47,190,0.08) 100%);
+      border: 1px solid rgba(6,102,235,0.25); position: relative; overflow: hidden;
+    }
+    .callout-box::before {
+      content: ''; position: absolute; top: 0; inset-inline-start: 0; inset-inline-end: 0; height: 3px;
+      background: linear-gradient(to right, var(--blue), var(--purple), var(--green));
+    }
+    .callout-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .callout-badge {
+      padding: 0.3rem 0.85rem; border-radius: 99px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      background: rgba(6,102,235,0.2); color: var(--blue-light); border: 1px solid rgba(6,102,235,0.3);
+    }
+    .callout-title { font-size: 1.25rem; font-weight: 800; }
+    .callout-item {
+      display: flex; gap: 1.25rem; padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05); align-items: flex-start;
+    }
+    .callout-item:last-child { border-bottom: none; }
+    .callout-num {
+      font-size: 1.6rem; font-weight: 900; line-height: 1.1;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; flex-shrink: 0; width: 28px;
+    }
+    .callout-content .callout-headline { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .callout-content .callout-body { font-size: 0.88rem; color: var(--light-gray); line-height: 1.7; }
+    .callout-content .callout-body strong { color: var(--white); }
+
     /* ─── MARKET DASHBOARD ─── */
     /* Line chart on left, doughnut on right */
     .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-top: 2rem; }
@@ -390,6 +480,7 @@
     <a href="#israel" data-en="Israel" data-he="ישראל">Israel</a>
     <a href="#bit" data-en="Revolut vs Bit" data-he="Revolut vs ביט">Revolut vs Bit</a>
     <a href="#dashboard" data-en="Dashboard" data-he="לוח בקרה">Dashboard</a>
+    <a href="#bit-playbook" data-en="Bit Playbook" data-he="תוכנית ביט">Bit Playbook</a>
     <a href="#conclusion" data-en="Conclusion" data-he="מסקנות">Conclusion</a>
   </div>
   <div class="nav-right">
@@ -1044,6 +1135,156 @@
 
 <div class="divider"></div>
 
+<!-- BIT PLAYBOOK — Strategic defense plan for Bit against Revolut's entry.
+     Built for senior executive presentation. Key business logic:
+     - 3 KPI Impact Cards quantify the upside of each defensive move
+     - 4-quarter roadmap turns strategy into an actionable sprint plan
+     - Callout box delivers the "so what" for C-suite decision makers -->
+<section id="bit-playbook">
+  <div class="fade-in">
+    <div class="section-label" data-en="Strategic Response" data-he="תגובה אסטרטגית">Strategic Response</div>
+    <h2 data-en="Strategic Response: The Bit Playbook" data-he="תגובה אסטרטגית: תוכנית ביט">Strategic Response: The Bit Playbook</h2>
+    <p class="section-sub" data-en="A data-driven defensive strategy for Bit — three high-impact initiatives and a four-quarter execution roadmap to defend market leadership against Revolut's entry." data-he="אסטרטגיית הגנה מבוססת נתונים עבור ביט — שלוש יוזמות בעלות השפעה גבוהה ומפת דרכים של ארבעה רבעונים להגנת מעמד המובילות בשוק מפני כניסת Revolut.">
+      A data-driven defensive strategy for Bit — three high-impact initiatives and a four-quarter execution roadmap to defend market leadership against Revolut's entry.
+    </p>
+
+    <!-- ── PART 1: KPI IMPACT CARDS ──────────────────────────────────── -->
+    <!-- Each card = one defensive move + its measurable success metric -->
+    <div class="impact-grid">
+
+      <!-- Initiative 1: FX Wallet — attacks Revolut's #1 advantage -->
+      <div class="impact-card" style="--impact-color:var(--blue)">
+        <div class="impact-icon" style="background:rgba(6,102,235,0.15)">
+          <i data-lucide="globe" style="width:22px;height:22px"></i>
+        </div>
+        <div class="impact-kpi" data-en="15%" data-he="15%">15%</div>
+        <div class="impact-label" data-en="FX Wallet" data-he='ארנק מט"ח'>FX Wallet</div>
+        <div class="impact-metric" data-en="Retention KPI — International Travelers" data-he='יעד שימור — נוסעי חו"ל'>Retention KPI — International Travelers</div>
+        <div class="impact-desc" data-en="Launch a multi-currency virtual card with real-time FX at interbank rates. Target: retain 15% of Bit's 3.5M users who currently switch to Revolut when traveling. Each retained user = ₪180 annual revenue uplift." data-he='השקת כרטיס וירטואלי רב-מטבעי בשערי מט"ח אמיתיים. יעד: שימור 15% ממשתמשי ביט שעוברים ל-Revolut בנסיעות. כל משתמש שנשמר = ₪180 עלייה בהכנסות שנתיות.'>Launch a multi-currency virtual card with real-time FX at interbank rates. Target: retain 15% of Bit's 3.5M users who currently switch to Revolut when traveling. Each retained user = ₪180 annual revenue uplift.</div>
+      </div>
+
+      <!-- Initiative 2: Smart Cashback — drives daily engagement (DAU) -->
+      <div class="impact-card" style="--impact-color:var(--green)">
+        <div class="impact-icon" style="background:rgba(0,212,126,0.12)">
+          <i data-lucide="shopping-bag" style="width:22px;height:22px"></i>
+        </div>
+        <div class="impact-kpi" data-en="+20%" data-he="+20%">+20%</div>
+        <div class="impact-label" data-en="Smart Cashback" data-he="קאשבק חכם">Smart Cashback</div>
+        <div class="impact-metric" data-en="DAU Growth Target" data-he="יעד צמיחת DAU">DAU Growth Target</div>
+        <div class="impact-desc" data-en="AI-driven cashback engine connected to 50 top Israeli retail chains. Users earn rewards passively — no manual activation. Projected +20% Daily Active Users within 90 days of launch, turning Bit into a daily-use app." data-he="מנוע קאשבק מבוסס AI המחובר ל-50 רשתות שיווק מובילות. המשתמשים מרוויחים פסיבית ללא הפעלה ידנית. צפוי +20% ב-DAU תוך 90 יום מההשקה, והפיכת ביט לאפליקציה לשימוש יומי.">AI-driven cashback engine connected to 50 top Israeli retail chains. Users earn rewards passively — no manual activation. Projected +20% Daily Active Users within 90 days of launch, turning Bit into a daily-use app.</div>
+      </div>
+
+      <!-- Initiative 3: Group Payments — amplifies virality -->
+      <div class="impact-card" style="--impact-color:var(--purple)">
+        <div class="impact-icon" style="background:rgba(123,47,190,0.15)">
+          <i data-lucide="users" style="width:22px;height:22px"></i>
+        </div>
+        <div class="impact-kpi" data-en="1.4×" data-he="1.4×">1.4×</div>
+        <div class="impact-label" data-en="Group Payments" data-he="תשלומים קבוצתיים">Group Payments</div>
+        <div class="impact-metric" data-en="Viral Coefficient Target" data-he="יעד Viral Coefficient">Viral Coefficient Target</div>
+        <div class="impact-desc" data-en="Shared expenses, trip splits, and group collections — each new group session invites non-Bit users organically. Target viral coefficient of 1.4: every user brings 1.4 new users, turning the existing network into a growth engine." data-he="הוצאות משותפות, חלוקת טיולים ואיסוף קבוצתי — כל סשן קבוצתי מזמין משתמשים שאינם ביט באופן אורגני. יעד Viral Coefficient של 1.4: כל משתמש מביא 1.4 משתמשים חדשים, והפיכת הרשת הקיימת למנוע צמיחה.">Shared expenses, trip splits, and group collections — each new group session invites non-Bit users organically. Target viral coefficient of 1.4: every user brings 1.4 new users, turning the existing network into a growth engine.</div>
+      </div>
+    </div>
+
+    <!-- ── PART 2: STRATEGIC ROADMAP — 4 QUARTERS ────────────────────── -->
+    <!-- Connector line rendered via ::before pseudo-element in CSS -->
+    <div style="margin-top:3rem">
+      <h3 style="font-size:1.3rem;margin-bottom:0.4rem" data-en="Strategic Roadmap — 4 Quarters" data-he="מפת דרכים אסטרטגית — 4 רבעונים">Strategic Roadmap — 4 Quarters</h3>
+      <p style="color:var(--gray);font-size:0.9rem;margin-bottom:1.5rem" data-en="From quick wins to financial super-app — a phased execution plan to outmaneuver Revolut." data-he="מניצחונות מהירים ועד סופר-אפליקציה פיננסית — תוכנית ביצוע מדורגת כדי להקדים את Revolut.">From quick wins to financial super-app — a phased execution plan to outmaneuver Revolut.</p>
+
+      <div class="roadmap-grid">
+
+        <!-- Q1 — Quick Wins: fast, low-risk moves that deliver immediate signal -->
+        <div class="quarter-card">
+          <div class="quarter-dot" style="--q-color:var(--blue)">
+            <i data-lucide="zap" style="width:15px;height:15px"></i>
+          </div>
+          <div class="quarter-label" style="--q-color:var(--blue)" data-en="Q1 — Quick Wins" data-he="Q1 — ניצחונות מהירים">Q1 — Quick Wins</div>
+          <div class="quarter-title" data-en="Foundation Sprint" data-he="ספרינט ייסוד">Foundation Sprint</div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--blue)">→</span><span data-en="International virtual card (Mastercard/Visa)" data-he="כרטיס וירטואלי בינלאומי (Mastercard/Visa)">International virtual card (Mastercard/Visa)</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--blue)">→</span><span data-en="Basic FX interface — 30+ currencies, real rates" data-he='ממשק מט"ח בסיסי — 30+ מטבעות, שערים אמיתיים'>Basic FX interface — 30+ currencies, real rates</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--blue)">→</span><span data-en="Apple Pay / Google Pay integration" data-he="חיבור ל-Apple Pay / Google Pay">Apple Pay / Google Pay integration</span></div>
+        </div>
+
+        <!-- Q2 — Ecosystem: build the merchant network & cashback rewards -->
+        <div class="quarter-card">
+          <div class="quarter-dot" style="--q-color:var(--purple)">
+            <i data-lucide="link-2" style="width:15px;height:15px"></i>
+          </div>
+          <div class="quarter-label" style="--q-color:var(--purple)" data-en="Q2 — Ecosystem" data-he="Q2 — אקוסיסטם">Q2 — Ecosystem</div>
+          <div class="quarter-title" data-en="Merchant Network" data-he="רשת מסחרית">Merchant Network</div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--purple)">→</span><span data-en="50 top retail chains: Shufersal, Super-Pharm, Wolt" data-he="50 רשתות: שופרסל, סופר-פארם, וולט">50 top retail chains: Shufersal, Super-Pharm, Wolt</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--purple)">→</span><span data-en="Auto cashback — no manual activation required" data-he="קאשבק אוטומטי — ללא הפעלה ידנית">Auto cashback — no manual activation required</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--purple)">→</span><span data-en="Group payment flows with social sharing" data-he="תשלומים קבוצתיים עם שיתוף חברתי">Group payment flows with social sharing</span></div>
+        </div>
+
+        <!-- Q3 — AI: intelligent financial tools that deepen engagement -->
+        <div class="quarter-card">
+          <div class="quarter-dot" style="--q-color:var(--yellow)">
+            <i data-lucide="cpu" style="width:15px;height:15px"></i>
+          </div>
+          <div class="quarter-label" style="--q-color:var(--yellow)" data-en="Q3 — Advanced AI" data-he="Q3 — AI מתקדם">Q3 — Advanced AI</div>
+          <div class="quarter-title" data-en="Intelligence Layer" data-he="שכבת אינטליגנציה">Intelligence Layer</div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--yellow)">→</span><span data-en="PFM budget manager — personal finance dashboard" data-he="PFM — לוח ניהול תקציב אישי">PFM budget manager — personal finance dashboard</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--yellow)">→</span><span data-en="AI alerts: 'You're overpaying ₪800/month in bank fees'" data-he="התראות AI: 'אתה משלם ₪800/חודש יותר בעמלות בנק'">AI alerts: 'You're overpaying ₪800/month in bank fees'</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--yellow)">→</span><span data-en="Predictive spending insights (ML-powered)" data-he="תחזיות הוצאות (ML)">Predictive spending insights (ML-powered)</span></div>
+        </div>
+
+        <!-- Q4 — Financial Hub: become the command center for Israeli personal finance -->
+        <div class="quarter-card">
+          <div class="quarter-dot" style="--q-color:var(--green)">
+            <i data-lucide="layout-dashboard" style="width:15px;height:15px"></i>
+          </div>
+          <div class="quarter-label" style="--q-color:var(--green)" data-en="Q4 — Financial Hub" data-he="Q4 — מרכז פיננסי">Q4 — Financial Hub</div>
+          <div class="quarter-title" data-en="Super-App Launch" data-he="השקת סופר-אפליקציה">Super-App Launch</div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--green)">→</span><span data-en="Open Banking: view all Israeli bank accounts in one screen" data-he="Open Banking: כל החשבונות במסך אחד">Open Banking: view all Israeli bank accounts in one screen</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--green)">→</span><span data-en="Micro-investments: stocks, ETFs from ₪50" data-he="השקעות קטנות: מניות, ETF מ-₪50">Micro-investments: stocks, ETFs from ₪50</span></div>
+          <div class="quarter-item"><span class="quarter-arrow" style="--q-color:var(--green)">→</span><span data-en="Embedded travel insurance & instant loans" data-he="ביטוח נסיעות מובנה והלוואות מיידיות">Embedded travel insurance & instant loans</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PART 3: EXECUTIVE CALLOUT BOX ─────────────────────────────── -->
+    <!-- The "so what" for C-suite: 3 sharp strategic imperatives -->
+    <div class="callout-box">
+      <div class="callout-header">
+        <i data-lucide="alert-triangle" style="width:20px;height:20px;color:var(--yellow)"></i>
+        <div class="callout-badge" data-en="For Decision Makers" data-he="למקבלי החלטות">For Decision Makers</div>
+        <div class="callout-title" data-en="Recommendation for Decision Makers" data-he="המלצה למקבלי החלטות">Recommendation for Decision Makers</div>
+      </div>
+
+      <!-- Imperative 1: urgency of timing — the window is closing -->
+      <div class="callout-item">
+        <div class="callout-num">01</div>
+        <div class="callout-content">
+          <div class="callout-headline" data-en="Leverage the existing Network Effect before Revolut reaches critical mass" data-he="מינוף ה-Network Effect הקיים לפני שרבולוט מגיעה למסה קריטית">מינוף ה-Network Effect הקיים לפני שרבולוט מגיעה למסה קריטית</div>
+          <div class="callout-body" data-en="Bit already holds 3.5M users and 90% of the P2P market — a structural advantage Revolut cannot replicate overnight. Every month of inaction allows Revolut to acquire 40,000+ Israeli users and approach the Tipping Point where network effects reverse. The window to act is 12–18 months, not 3–5 years." data-he="לביט כבר יש 3.5M משתמשים ו-90% משוק ה-P2P — יתרון מבני ש-Revolut לא יכולה לשכפל בין לילה. <strong>כל חודש של חוסר פעולה מאפשר ל-Revolut לצבור 40,000+ משתמשים ישראלים</strong> ולהתקרב לנקודת ה-Tipping Point שבה אפקטי הרשת מתהפכים. חלון הפעולה הוא 12–18 חודשים, לא 3–5 שנים.">לביט כבר יש 3.5M משתמשים ו-90% משוק ה-P2P — יתרון מבני ש-Revolut לא יכולה לשכפל בין לילה. <strong>כל חודש של חוסר פעולה מאפשר ל-Revolut לצבור 40,000+ משתמשים ישראלים</strong> ולהתקרב לנקודת ה-Tipping Point שבה אפקטי הרשת מתהפכים. חלון הפעולה הוא 12–18 חודשים, לא 3–5 שנים.</div>
+        </div>
+      </div>
+
+      <!-- Imperative 2: turn "local" from weakness into moat -->
+      <div class="callout-item">
+        <div class="callout-num">02</div>
+        <div class="callout-content">
+          <div class="callout-headline" data-en="Turn 'Israeliness' into a Competitive Moat — not an excuse for stagnation" data-he="הפיכת 'הישראליות' ל-Competitive Moat — לא תירוץ לאי-פעולה">הפיכת "הישראליות" ל-Competitive Moat — לא תירוץ לאי-פעולה</div>
+          <div class="callout-body" data-en="Open Banking integration with Israeli banks, full Hebrew UX, regulatory compliance, and local brand trust are structural advantages Revolut will spend 18+ months trying to match. Bit must weaponize these now — building deep integrations with Bank Hapoalim data, Israeli tax authorities (Bituach Leumi), and local merchant networks before Revolut completes its local setup." data-he="אינטגרציית Open Banking עם הבנקים הישראליים, UX בעברית מלאה, תאימות רגולטורית, ואמון מותג מקומי הם יתרונות מבניים ש-Revolut תבלה 18+ חודשים בניסיון להשיג. <strong>ביט חייבת לנצל אלה עכשיו</strong> — בניית אינטגרציות עמוקות עם נתוני בנק הפועלים, ביטוח לאומי ורשתות המסחר המקומיות לפני שרבולוט תשלים את ההתקנות המקומיות שלה.">אינטגרציית Open Banking עם הבנקים הישראליים, UX בעברית מלאה, תאימות רגולטורית, ואמון מותג מקומי הם יתרונות מבניים ש-Revolut תבלה 18+ חודשים בניסיון להשיג. <strong>ביט חייבת לנצל אלה עכשיו</strong> — בניית אינטגרציות עמוקות עם נתוני בנק הפועלים, ביטוח לאומי ורשתות המסחר המקומיות לפני שרבולוט תשלים את ההתקנות המקומיות שלה.</div>
+        </div>
+      </div>
+
+      <!-- Imperative 3: revenue flywheel — close the ₪700M cumulative loss -->
+      <div class="callout-item">
+        <div class="callout-num">03</div>
+        <div class="callout-content">
+          <div class="callout-headline" data-en="Activate the Revenue Flywheel: convert P2P volume into premium product revenue" data-he="הפעלת מנוע ההכנסות: המרת נפח P2P להכנסות ממוצרים פרימיום">הפעלת מנוע ההכנסות: המרת נפח P2P להכנסות ממוצרים פרימיום</div>
+          <div class="callout-body" data-en="Bit processes ₪29.4B annually — but every shekel flows through at near-zero revenue. Converting just 20% of active users to premium services (FX Wallet, Smart Cashback, PFM, micro-investments) at ₪59/month will generate ₪247M annual recurring revenue — enough to reach operational profitability and close the ₪700M cumulative loss within 3 years." data-he="ביט מעבדת ₪29.4B בשנה — אך כל שקל עובר ברמת הכנסות אפסית. <strong>המרת רק 20% מהמשתמשים הפעילים לשירותי פרימיום</strong> (FX Wallet, קאשבק, PFM, השקעות) ב-₪59/חודש תייצר ₪247M הכנסות חוזרות שנתיות — מספיק להגיע לרווחיות תפעולית ולסגור את ההפסד המצטבר של ₪700M תוך 3 שנים.">ביט מעבדת ₪29.4B בשנה — אך כל שקל עובר ברמת הכנסות אפסית. <strong>המרת רק 20% מהמשתמשים הפעילים לשירותי פרימיום</strong> (FX Wallet, קאשבק, PFM, השקעות) ב-₪59/חודש תייצר ₪247M הכנסות חוזרות שנתיות — מספיק להגיע לרווחיות תפעולית ולסגור את ההפסד המצטבר של ₪700M תוך 3 שנים.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- CONCLUSION -->
 <section id="conclusion">
   <div class="fade-in">
@@ -1133,6 +1374,8 @@
       animateCounter(document.getElementById('stat-rev'), 4.0, 'B$', 1600);
       animateCounter(document.getElementById('stat-profit'), 1.4, 'B$', 1400);
     }, 300);
+    // Render Lucide icons after DOM is ready (Bit Playbook section)
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
   // ─── INTERSECTION OBSERVER (fade-in) ──────────────────────
